@@ -27,6 +27,12 @@ end
 activate :blog do |blog|
   blog.name = "blog"
   blog.prefix = "articles"
+  blog.tag_template = "tag.html"
+  blog.layout = "article_layout.html"
+end
+
+activate :disqus do |disqus|
+  disqus.shortname = "gjaldon"
 end
 
 helpers do
