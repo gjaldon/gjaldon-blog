@@ -1,0 +1,9 @@
+= wrap_layout "layouts/application" do
+  %article
+    %h1{class: "current-article-title"}= current_article.title
+    .current-article-meta
+      = "by Gabriel Jaldon #{current_article.date.strftime('%b %e, %Y')}"
+    %hr
+    = yield
+  = disqus
+  = disqus_count

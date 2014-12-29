@@ -13,13 +13,13 @@
       %ul{class: "centered-navigation-menu show"}
         - data.site.internal.each do |link|
           %li{class: "nav-link"}
-            %a{href: link.url}= link.title
+            = link_to link.title, link.path
         %li{class: "nav-link logo"}
-          %a{href: "#", class: "logo"}= data.site.title
+          = link_to data.site.title, "/", class: "logo"
         - data.site.external.each do |link|
           %li{class: "nav-link"}
-            %a{href: link.url}= link.title
+            = link_to link.title, link.url, target: "_blank"
     .wrapper
       %main
         = yield
-    = javascript_include_tag "https://code.jquery.com/jquery-2.1.1.min.js", "application"
+    / = javascript_include_tag "https://code.jquery.com/jquery-2.1.1.min.js", "application"
