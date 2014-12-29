@@ -24,6 +24,11 @@ activate :deploy do |deploy|
   deploy.method = :git
 end
 
+activate :blog do |blog|
+  blog.name = "blog"
+  blog.prefix = "articles"
+end
+
 helpers do
   def nav_link(link_text, page_url, options = {})
     options[:class] ||= ""
