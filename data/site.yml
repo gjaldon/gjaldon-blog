@@ -1,0 +1,15 @@
+title: GJ
+internal:
+  - title: About
+    path: "about"
+  - title: Articles
+    path: "/"
+  - title: Resume
+    path: "resume"
+external:
+  - title: Github
+    url: "https://github.com/gjaldon"
+  - title: Twitter
+    url: "https://twitter.com/gjaldon"
+  - title: Linkedin
+    url: "https://www.linkedin.com/in/gjaldon"
