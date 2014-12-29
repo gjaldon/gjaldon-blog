@@ -287,3 +287,22 @@ main {
   a { color: $secondary-font-color; }
   a:hover { color: $base-accent-color; }
 }
+
+
+// Article
+
+article {
+  margin-top: 50px;
+  font-family: $serif;
+}
+
+.current-article-title {
+  font-size: 2em;
+  font-family: $serif;
+}
+
+.current-article-meta {
+  color: $medium-gray;
+  font-size: .9em;
+  margin: 10px 0;
+}

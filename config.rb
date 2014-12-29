@@ -27,6 +27,7 @@ end
 activate :blog do |blog|
   blog.name = "blog"
   blog.prefix = "articles"
+  blog.permalink = "{title}.html"
   blog.tag_template = "tag.html"
   blog.layout = "article_layout.html"
 end
