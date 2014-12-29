@@ -2,4 +2,12 @@
 title: GJaldon -  Modern Web Development with Elixir
 ---
 
-
+- blog.articles.each do |article|
+  .article-entry
+    %time= article.date.strftime("%b %e, %Y")
+    %h2.article-title
+      %a{href: "#"}= article.title
+    %ul.article-tag-list
+      - article.tags.each do |tag|
+        %li.article-tag
+          %a{href: "#"}= tag

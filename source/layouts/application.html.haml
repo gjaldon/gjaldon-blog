@@ -8,5 +8,18 @@
     = stylesheet_link_tag "application"
 
   %body{class: page_classes}
-    = yield
+    %header{class: "centered-navigation"}
+      .centered-navigation-wrapper
+      %ul{class: "centered-navigation-menu show"}
+        - data.site.internal.each do |link|
+          %li{class: "nav-link"}
+            %a{href: link.url}= link.title
+        %li{class: "nav-link logo"}
+          %a{href: "#", class: "logo"}= data.site.title
+        - data.site.external.each do |link|
+          %li{class: "nav-link"}
+            %a{href: link.url}= link.title
+    .wrapper
+      %main
+        = yield
     = javascript_include_tag "https://code.jquery.com/jquery-2.1.1.min.js", "application"
