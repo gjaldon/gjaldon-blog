@@ -1,12 +1,21 @@
 $max-width: 1276px;
+$large-screen: 720px;
+$footer-height: 44px;
+
+html, body {
+  height: 100%;
+}
 
 .wrapper {
   @include outer-container;
+  min-height: 100%;
 }
 
 main {
   @include span-columns(6);
   @include shift(3);
+  overflow: auto;
+  padding-bottom: $footer-height;
 }
 
 .about-title {
@@ -25,7 +34,6 @@ main {
   $centered-navigation-submenu-padding: 1em;
   $centered-navigation-submenu-width: 12em;
   $centered-navigation-item-nudge: 2.2em;
-  $large-screen: 720px;
   $horizontal-bar-mode: $large-screen;
 
   background-color: $centered-navigation-background;
@@ -310,4 +318,51 @@ article {
   color: $medium-gray;
   font-size: .9em;
   margin: 10px 0;
+}
+
+
+// Footer
+
+.footer {
+  $base-spacing: 10px;
+  $footer-background: $base-accent-color;
+  $footer-color: white;
+  $footer-link-color: white;
+
+  background: $footer-background;
+  padding: $base-spacing;
+  text-align: center;
+  width: 100%;
+  position: relative;
+  margin-top: -$footer-height;
+  height: $footer-height;
+  clear: both;
+
+  ul {
+    margin-bottom: 1em;
+    width: 100%;
+    @include media($large-screen) {
+      margin-bottom: 0;
+    }
+  }
+
+  ul li {
+    padding-right: 1em;
+    font-size: 1em;
+    color: $footer-link-color;
+
+    @include media($large-screen) {
+      display: inline;
+      text-align: left;
+    }
+  }
+
+  ul li a {
+    text-decoration: underline;
+    color: $footer-link-color;
+
+    &:hover {
+      color: $secondary-font-color;
+    }
+  }
 }

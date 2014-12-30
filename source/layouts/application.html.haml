@@ -22,4 +22,8 @@
     .wrapper
       %main
         = yield
-    / = javascript_include_tag "https://code.jquery.com/jquery-2.1.1.min.js", "application"
+    %footer{class: "footer"}
+      %ul
+        %li= link_to "Twitter", "#"
+        %li= link_to "Github", "#"
+        %li © 2014
