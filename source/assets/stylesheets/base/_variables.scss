@@ -1,7 +1,7 @@
 // Typography
 $sans-serif: $helvetica;
 $serif: $georgia;
-$base-font-family: $sans-serif;
+$base-font-family: $serif;
 $header-font-family: $base-font-family;
 
 // Sizes
@@ -25,8 +25,8 @@ $base-background-color: white;
 
 // Font Colors
 $base-font-color: black;
-$secondary-font-color: #14b2cf;
-$base-accent-color: #494452;
+$secondary-font-color: #494452;
+$base-accent-color: #14b2cf;
 
 // Link Colors
 $base-link-color: $base-accent-color;

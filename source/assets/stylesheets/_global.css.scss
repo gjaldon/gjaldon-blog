@@ -9,6 +9,10 @@ main {
   @include shift(3);
 }
 
+.about-title {
+  text-align: center;
+}
+
 // Navbar
 .centered-navigation {
   $centered-navigation-padding: 1em;
@@ -280,12 +284,13 @@ main {
 
 .article-title {
   font-size: 1.5em;
+  a { color: black; }
 }
 
 .article-tag {
   display: inline-block;
-  a { color: $secondary-font-color; }
-  a:hover { color: $base-accent-color; }
+  a { color: $base-accent-color; }
+  a:hover { color: $secondary-font-color; }
 }
 
 
