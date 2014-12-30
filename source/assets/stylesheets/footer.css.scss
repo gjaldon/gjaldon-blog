@@ -1,0 +1,43 @@
+.footer {
+  $base-spacing: 10px;
+  $footer-background: $base-accent-color;
+  $footer-color: white;
+  $footer-link-color: white;
+
+  background: $footer-background;
+  padding: $base-spacing;
+  text-align: center;
+  width: 100%;
+  position: relative;
+  margin-top: -$footer-height;
+  height: $footer-height;
+  clear: both;
+
+  ul {
+    margin-bottom: 1em;
+    width: 100%;
+    @include media($large-screen) {
+      margin-bottom: 0;
+    }
+  }
+
+  ul li {
+    padding-right: 1em;
+    font-size: 1em;
+    color: $footer-link-color;
+
+    @include media($large-screen) {
+      display: inline;
+      text-align: left;
+    }
+  }
+
+  ul li a {
+    text-decoration: underline;
+    color: $footer-link-color;
+
+    &:hover {
+      color: $secondary-font-color;
+    }
+  }
+}
