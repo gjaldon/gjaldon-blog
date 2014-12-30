@@ -1,0 +1,36 @@
+.article-entry {
+  padding: 20px 0;
+  border-bottom: 1px dotted $dark-gray;
+
+  time {
+    color: $medium-gray;
+    font-size: .9em;
+  }
+}
+
+.article-title {
+  font-size: 1.5em;
+  a { color: black; }
+}
+
+.article-tag {
+  display: inline-block;
+  a { color: $base-accent-color; }
+  a:hover { color: $secondary-font-color; }
+}
+
+article {
+  margin-top: 50px;
+  font-family: $serif;
+}
+
+.current-article-title {
+  font-size: 2em;
+  font-family: $serif;
+}
+
+.current-article-meta {
+  color: $medium-gray;
+  font-size: .9em;
+  margin: 10px 0;
+}
