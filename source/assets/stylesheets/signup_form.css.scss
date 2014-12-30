@@ -1,0 +1,31 @@
+$signup-border-color: #d8d6db;
+$signup-background: #f5f5f6;
+
+#mc-embed-signup {
+  border: 2px solid $signup-border-color;
+  background: $signup-background;
+  padding: 20px 0;
+  margin: 40px 0;
+
+  label { font-weight: normal; }
+
+  form {
+    padding: 0;
+    text-align: center;
+  }
+
+  input {
+    width: 50%;
+    margin: 10px auto;
+    border-color: $signup-border-color;
+
+    &:nth-last-child(2) {
+      margin-bottom: 5px;
+    }
+  }
+}
+
+#mc-embedded-subscribe {
+  font-family: $sans-serif;
+  margin-top: 0 !important;
+}
