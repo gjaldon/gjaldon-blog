@@ -32,9 +32,12 @@ wget http://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb && sudo d
 sudo apt-get update
 sudo apt-get install elixir nodes-legacy npm postgresql postgresql-contrib
 npm install -g brunch
+sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
 ~~~
 
 We need `node`, `npm` and `brunch` since they come as the default build tool for Phoenix.
+We also redirect connections from `port 80` to `port 8080` since we will have the
+app listen to `port 8080`.
 
 
 ## Server as Remote Git Repository
@@ -93,11 +96,15 @@ git --work-tree=/var/www/app.com --git-dir=/var/repo/site.git checkout -f
   bower install &&
   brunch build --production &&
   mix phoenix.digest &&
-  MIX_ENV=prod PORT=8888 mix do deps.get, deps.compile, ecto.migrate)
+  MIX_ENV=prod PORT=8888 mix do deps.get, deps.compile, ecto.migrate &&
+  MIX_ENV=prod PORT=8080 elixir --detached -S mix phoenix.server)
 ~~~
 
 The `git` line checks out the source files of our app to the `/var/www/app.com` directory.
 We can then serve our app from that directory later on.
+
+The last line starts our app on `port 8080` in detached mode if it hasn't started yet. You
+may change port you want your app to listen on.
 
 The other commands will install all of our app's dependencies, build all its assets, and
 run all the Ecto migrations every time we `git push` to the repo.
