@@ -11,7 +11,7 @@ h1, h2, h3, h4, h5, h6 {
   font-family: $header-font-family;
   line-height: $header-line-height;
   font-weight: 300;
-  margin: 0;
+  margin: 10px 0;
   text-rendering: optimizeLegibility; // Fix the character spacing for headings
 }
 
@@ -40,7 +40,7 @@ h6 {
 }
 
 p {
-  margin: 10px 0 ($base-line-height * .5);
+  margin: 0 0 25px 0;
 }
 
 a {

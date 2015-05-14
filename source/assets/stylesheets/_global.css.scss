@@ -17,3 +17,15 @@ main {
 .about-title {
   text-align: center;
 }
+
+pre {
+  word-wrap: normal;
+  white-space: pre;
+  overflow-x: auto;
+  font-size: .9em;
+
+  code {
+    left: -70px;
+    position: relative;
+  }
+}
