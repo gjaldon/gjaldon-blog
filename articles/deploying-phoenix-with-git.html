@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='width=device-width, initial-scale=1' name='viewport'>
+    <title>Deploying Phoenix with Git</title>
+    <link href="../assets/stylesheets/syntax.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/stylesheets/application.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body class='articles articles_deploying-phoenix-with-git'>
+    <header class='centered-navigation'>
+      <div class='centered-navigation-wrapper'></div>
+      <ul class='centered-navigation-menu show'>
+        <li class='nav-link'>
+          <a href="/about">About</a>
+        </li>
+        <li class='nav-link'>
+          <a href="/">Articles</a>
+        </li>
+        <li class='nav-link logo'>
+          <a class="logo" href="/">GJ</a>
+        </li>
+        <li class='nav-link'>
+          <a target="_blank" href="https://github.com/gjaldon">Github</a>
+        </li>
+        <li class='nav-link'>
+          <a target="_blank" href="https://twitter.com/gjaldon">Twitter</a>
+        </li>
+      </ul>
+    </header>
+    <div class='wrapper'>
+      <main>
+        <article>
+          <h1 class='current-article-title'>Deploying Phoenix with Git</h1>
+          <div class='current-article-meta'>
+            by Gabriel Jaldon May 14, 2015
+          </div>
+          <hr>
+          <h2 id="introduction">Introduction</h2>
+          
+          <p>I have always enjoyed the experience of doing Heroku-like <code>git push</code> deploys and just
+          recently set up deployment for my Phoenix application. It turns out, setting this
+          up doesn't take too much time and immediately pays dividends. In this article
+          I'll show you how to set up your server so that it automatically does the
+          following:</p>
+          
+          <ol>
+            <li>Deploy the app to the server</li>
+            <li>Install all dependencies</li>
+            <li>Build production assets</li>
+            <li>Run all Ecto migrations</li>
+          </ol>
+          
+          <p>Throughout this tutorial we will assume a VPS that uses Ubuntu.</p>
+          
+          <h2 id="configure-server-for-the-application">Configure Server for the Application</h2>
+          
+          <p>Since we are not building a <a href="https://github.com/bitwalker/exrm">release</a>, we will need
+          to install the dependencies so that Phoenix can run its mix tasks and build its assets.
+          A default Phoenix app will need the following installed:</p>
+          
+          <pre class="highlight plaintext"><code>
+          wget http://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb &amp;&amp; sudo dpkg -i erlang-solutions_1.0_all.deb
+          sudo apt-get update
+          sudo apt-get install elixir nodes-legacy npm postgresql postgresql-contrib
+          npm install -g brunch
+          sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
+          </code></pre>
+          
+          <p>We need <code>node</code>, <code>npm</code> and <code>brunch</code> since they come as the default build tool for Phoenix.
+          We also redirect connections from <code>port 80</code> to <code>port 8080</code> since we will have the
+          app listen to <code>port 8080</code>.</p>
+          
+          <h2 id="server-as-remote-git-repository">Server as Remote Git Repository</h2>
+          
+          <p>For us to be able to push our code to the server, we will need to configure it as a
+          remote repository. To do this, you will need to do the following from your VPS:</p>
+          
+          <pre class="highlight plaintext"><code>
+          cd /var
+          mkdir repo &amp;&amp; cd repo
+          mkdir app.git &amp;&amp; cd app.git
+          git init --bare
+          </code></pre>
+          
+          <p>From our local machine, we could push code to the server by doing:</p>
+          
+          <pre class="highlight plaintext"><code>
+          git remote add production ssh://user@yourserver/var/repo/app.git
+          git push production master
+          </code></pre>
+          
+          <p>Inspecting your VPS's <code>/var/repo/app.git</code> directory, you will see that there are no source
+          files there from your app. This is due to the <code>--bare</code> option we passed earlier. Remote
+          repositories are usually bare repositories since they are meant to accept code pushes
+          from different collaborators. Having a working directory of your app in the bare repo will
+          just lead to conflicts.</p>
+          
+          <p>So how do we deploy the app when we don't have its source available after a <code>git push</code>?</p>
+          
+          <h2 id="the-post-receive-hook">The Post-Receive Hook</h2>
+          
+          <p>Git provides <a href="http://git-scm.com/book/en/Customizing-Git-Git-Hooks">hooks</a> that get run after
+          certain actions. The hook we want is the <code>post-receive</code> hook since it gets triggered every
+          time your server receives a push.</p>
+          
+          <p>In the VPS, we do the following:</p>
+          
+          <pre class="highlight plaintext"><code>
+          mkdir -p /var/www/app.com
+          cd /var/repo/app.git/hooks
+          vim post-receive
+          </code></pre>
+          
+          <p>Feel free to use whatever editor you like. From the editor, type:</p>
+          
+          <pre class="highlight shell"><code>
+          <span class="c">#!/bin/sh</span>
+          git --work-tree<span class="o">=</span>/var/www/app.com --git-dir<span class="o">=</span>/var/repo/site.git checkout -f
+          <span class="o">(</span><span class="nb">cd</span> /var/www/app.com <span class="o">&amp;&amp;</span>
+            npm install <span class="o">&amp;&amp;</span>
+            bower install <span class="o">&amp;&amp;</span>
+            brunch build --production <span class="o">&amp;&amp;</span>
+            mix phoenix.digest <span class="o">&amp;&amp;</span>
+            <span class="nv">MIX_ENV</span><span class="o">=</span>prod <span class="nv">PORT</span><span class="o">=</span>8888 mix <span class="k">do </span>deps.get, deps.compile, ecto.migrate <span class="o">&amp;&amp;</span>
+            <span class="nv">MIX_ENV</span><span class="o">=</span>prod <span class="nv">PORT</span><span class="o">=</span>8080 elixir --detached -S mix phoenix.server<span class="o">)</span>
+          </code></pre>
+          
+          <p>The <code>git</code> line checks out the source files of our app to the <code>/var/www/app.com</code> directory.
+          We can then serve our app from that directory later on.</p>
+          
+          <p>The last line starts our app on <code>port 8080</code> in detached mode if it hasn't started yet. You
+          may change port you want your app to listen on.</p>
+          
+          <p>The other commands will install all of our app's dependencies, build all its assets, and
+          run all the Ecto migrations every time we <code>git push</code> to the repo.</p>
+          
+          <p>One last thing:</p>
+          
+          <pre class="highlight plaintext"><code>
+          chmod +x /hooks/post-receive
+          </code></pre>
+          
+          <p>The above command makes sure we can execute the <code>post-receive</code> file.</p>
+          
+          <h2 id="configure-the-database">Configure the Database</h2>
+          
+          <p>We need to create the production database for our app and configure it in Phoenix
+          so Ecto can access it.</p>
+          
+          <pre class="highlight plaintext"><code>
+          sudo -u postgres createuser --superuser $USER
+          sudo -u postgres psql
+          </code></pre>
+          
+          <p>Using the postgres role, we created a new role with the same name as your login name.
+          We then access psql as the postgres user to set the password for the new role. Take
+          note of the login name and the new password since we will use this later for configuring
+          Ecto.</p>
+          
+          <pre class="highlight plaintext"><code>
+          postgres=# \password $USER
+          </code></pre>
+          
+          <p>Then we can create the production database.</p>
+          
+          <pre class="highlight plaintext"><code>
+          createdb app
+          </code></pre>
+          
+          <p>Next, we configure Ecto so it can access our production database.</p>
+          
+          <pre class="highlight plaintext"><code>
+          vim /var/www/app.com/config/prod.secret.exs
+          </code></pre>
+          
+          <p>The file will look like:</p>
+          
+          <pre class="highlight elixir"><code>
+          <span class="n">config</span> <span class="ss">:app</span><span class="p">,</span> <span class="no">App</span><span class="o">.</span><span class="no">Repo</span><span class="p">,</span>
+            <span class="ss">adapter:</span> <span class="no">Ecto</span><span class="o">.</span><span class="no">Adapters</span><span class="o">.</span><span class="no">Postgres</span><span class="p">,</span>
+            <span class="ss">username:</span> <span class="sd">"</span><span class="s2">your_login_name"</span><span class="p">,</span>
+            <span class="ss">password:</span> <span class="sd">"</span><span class="s2">your_password"</span><span class="p">,</span>
+            <span class="ss">database:</span> <span class="sd">"</span><span class="s2">app"</span><span class="p">,</span>
+            <span class="ss">size:</span> <span class="m">20</span>
+          </code></pre>
+          
+          <p>Replace the <code>username</code>, <code>password</code> and <code>database</code> options with new ones we created earlier
+          through <code>psql</code>.</p>
+          
+          <h2 id="test-and-deploy">Test and Deploy</h2>
+          
+          <p>Congratulations! You can now do <code>git push</code> deploys to your server with:</p>
+          
+          <pre class="highlight plaintext"><code>
+          git push production master
+          </code></pre>
+          
+          <p>You should be able to see all the installs, builds and migration commands running after
+          the <code>git push</code>.</p>
+          
+          <p>If you have no new code to push yet and want to test if your <code>post-receive</code> hook works,
+          you can do below from your VPS:</p>
+          
+          <pre class="highlight plaintext"><code>
+          cd /var/repo/app.git
+          git log -2 --format=oneline --reverse
+          </code></pre>
+          
+          <p>Get the sha for the 2 commits and replace them with <code>$SHA1</code> and <code>$SHA2</code> below:</p>
+          
+          <pre class="highlight plaintext"><code>
+          echo "$FROM_ID $TO_ID master" | ./hooks/post-receive
+          </code></pre>
+          
+          <p>Voila! You get to test if your <code>post-receive</code> hook works without pushing any code!</p>
+          
+          <p>I found this deployment strategy to be simple to set up and wrap my head around. It
+          made it easy to ship code to production without the overhead of learning another tool.</p>
+          
+          <p>Feel free to share your deployment strategy and let me know if you have any questions
+          or feedback. Looking forward to hearing from you!</p>
+          
+          <h5 id="references">References:</h5>
+          
+          <ul>
+            <li><a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-automatic-deployment-with-git-with-a-vps">How To Set Up Automatic Deployment with Git with a VPS</a></li>
+            <li><a href="www.phoenixframework.org/v0.12.0/docs/advanced-deployment">Phoenix Advanced Deployment</a></li>
+            <li><a href="git-scm.com/book/ca/v1/Git-on-the-Server">Git on the Server</a></li>
+            <li><a href="http://krisjordan.com/essays/setting-up-push-to-deploy-with-git">Setting up Push-to-Deploy with git</a></li>
+          </ul>
+        </article>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+        //<![CDATA[
+                          var disqus_shortname = 'gjaldon';
+                  
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        //]]>
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        <script type="text/javascript">
+        //<![CDATA[
+            var disqus_shortname = 'gjaldon';
+            (function () {
+                var s = document.createElement('script'); s.async = true;
+                s.type = 'text/javascript';
+                s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+                (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+            }());
+        //]]>
+        </script>
+      </main>
+    </div>
+    <footer class='footer'>
+      <ul>
+        <li><a href="#">Twitter</a></li>
+        <li><a href="#">Github</a></li>
+        <li>© 2014</li>
+      </ul>
+    </footer>
+  </body>
+</html>
