@@ -36,6 +36,8 @@ activate :disqus do |disqus|
   disqus.shortname = "gjaldon"
 end
 
+activate :syntax
+
 helpers do
   def nav_link(link_text, page_url, options = {})
     options[:class] ||= ""
