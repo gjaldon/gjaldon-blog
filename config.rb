@@ -3,6 +3,8 @@ require "extensions/views"
 activate :views
 activate :directory_indexes
 
+page "CNAME", layout: false
+
 set :relative_links, true
 set :css_dir, 'assets/stylesheets'
 set :js_dir, 'assets/javascripts'
