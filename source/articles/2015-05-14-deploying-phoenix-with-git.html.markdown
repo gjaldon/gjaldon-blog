@@ -209,7 +209,7 @@ or feedback. Looking forward to hearing from you!
 
 ##### References:
 
-  - [How To Set Up Automatic Deployment with Git with a VPS](https://www.digitalocean.com/community/tutorials/how-to-set-up-automatic-deployment-with-git-with-a-vps)
-  - [Phoenix Advanced Deployment](www.phoenixframework.org/v0.12.0/docs/advanced-deployment)
-  - [Git on the Server](git-scm.com/book/ca/v1/Git-on-the-Server)
-  - [Setting up Push-to-Deploy with git](http://krisjordan.com/essays/setting-up-push-to-deploy-with-git)
+  - <a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-automatic-deployment-with-git-with-a-vps" target="_blank">How To Set Up Automatic Deployment with Git with a VPS</a>
+  - <a href="http://www.phoenixframework.org/v0.12.0/docs/advanced-deployment" target="_blank">Phoenix Advanced Deployment</a>
+  - <a href="http://git-scm.com/book/ca/v1/Git-on-the-Server" target="_blank">Git on the Server</a>
+  - <a href="http://krisjordan.com/essays/setting-up-push-to-deploy-with-git" target="_blank">Setting up Push-to-Deploy with git</a>
