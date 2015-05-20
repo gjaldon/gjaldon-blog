@@ -211,7 +211,7 @@
           <p>Get the sha for the 2 commits and replace them with <code>$SHA1</code> and <code>$SHA2</code> below:</p>
           
           <pre class="highlight plaintext"><code>
-          echo "$FROM_ID $TO_ID master" | ./hooks/post-receive
+          echo "$SHA1 $SHA2 master" | ./hooks/post-receive
           </code></pre>
           
           <p>Voila! You get to test if your <code>post-receive</code> hook works without pushing any code!</p>
