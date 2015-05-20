@@ -195,7 +195,7 @@ Get the sha for the 2 commits and replace them with `$SHA1` and `$SHA2` below:
 
 ~~~
 
-echo "$FROM_ID $TO_ID master" | ./hooks/post-receive
+echo "$SHA1 $SHA2 master" | ./hooks/post-receive
 ~~~
 
 Voila! You get to test if your `post-receive` hook works without pushing any code!
