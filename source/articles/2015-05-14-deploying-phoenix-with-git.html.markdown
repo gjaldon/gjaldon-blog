@@ -1,7 +1,7 @@
 ---
 title: Deploying Phoenix with Git
 date: 2015-05-14 12:34 UTC
-tags: phoenix, deployment
+tags: elixir, phoenix, deployment
 ---
 
 ## Introduction
