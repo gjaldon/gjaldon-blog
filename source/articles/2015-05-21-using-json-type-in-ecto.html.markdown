@@ -6,19 +6,24 @@ tags: elixir, ecto
 
 ## Introduction
 
-## Errors
+In a recent project, I had the chance to use JSON in `Ecto`. Although `Ecto` does not
+currently support JSON, it does provide us with the capability to define custom
+types. In this blog post, we'll go through how we can use the JSON type and see
+how we can do queries on JSON columns in `Ecto`. Did I mention JSON enough already?
 
-## Creating a Postgrex Extension
-
-## Configure Ecto with Custom Extension
 
 ## Custom Ecto Type
 
-## Wrap-up
+`Ecto` provides a behaviour module called `Ecto.Type`. It requires us to define four
+functions in the module that uses it. These functions are `type`, `cast/1`, `load/1` and
+`dump/1`. Note that these functions each expect a certain format in their return values
+that you could review in the [`Ecto.Type` docs](http://hexdocs.pm/ecto/Ecto.Type.html).
 
+Let's go ahead and define our JSON Ecto type:
 
+~~~elixir
 
-defmodule Streamline.JSON do
+defmodule MyApp.JSON do
   @behaviour Ecto.Type
 
   def type, do: :json
