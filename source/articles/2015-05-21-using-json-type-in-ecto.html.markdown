@@ -153,8 +153,6 @@ Oh, and if you prefer to work with `jsonb` instead of `json`, just change the re
 of `type/1` in `MyApp.JSON` to `:jsonb` and you're good to go. The `MyApp.JSONExtension` already
 extends `Postgrex` to support the `:jsonb` data type.
 
-Feel free to follow me on Twitter for more articles on Phoenix, Ecto and anything web development
-with Elixir.
 
 ##### References:
 
