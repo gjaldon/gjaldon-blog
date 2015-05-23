@@ -8,8 +8,8 @@ tags: elixir, ecto
 
 In a recent project, I had the chance to use JSON in `Ecto`. Although `Ecto` does not
 currently support JSON, it does provide us with the capability to define custom
-types. In this blog post, we'll go through how we can use the JSON type and see
-how we can do queries on JSON columns in `Ecto`. Did I mention JSON enough already?
+types. In this blog post, we'll go through how we can use the JSON type in `Ecto`.
+Did I mention JSON enough already?
 
 
 ## Custom Ecto Type
@@ -17,7 +17,7 @@ how we can do queries on JSON columns in `Ecto`. Did I mention JSON enough alrea
 `Ecto` provides a behaviour module called `Ecto.Type`. It requires us to define four
 functions in the module that uses it. These functions are `type`, `cast/1`, `load/1` and
 `dump/1`. Note that these functions each expect a certain format in their return values
-that you could review in the [`Ecto.Type` docs](http://hexdocs.pm/ecto/Ecto.Type.html).
+which you could review in the [`Ecto.Type` docs](http://hexdocs.pm/ecto/Ecto.Type.html).
 
 Let's go ahead and define our JSON Ecto type:
 
@@ -106,8 +106,9 @@ data types.
 
 ## Configure Ecto with Custom Extension
 
-Now how do we use `MyApp.Extension` in `Ecto`? `Ecto` supports an `:extensions` option in
-its configuration which can be used like below:
+Now how do we use `MyApp.Extension` in `Ecto`?
+
+`Ecto` supports an `:extensions` option in its configuration which can be used like below:
 
 ~~~elixir
   config :my_app, MyApp.Repo,
