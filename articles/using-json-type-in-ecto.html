@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <meta content='width=device-width, initial-scale=1' name='viewport'>
+    <title>Using JSON Type in Ecto</title>
+    <link href="../assets/stylesheets/syntax.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/stylesheets/application.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body class='articles articles_using-json-type-in-ecto'>
+    <header class='centered-navigation'>
+      <div class='centered-navigation-wrapper'></div>
+      <ul class='centered-navigation-menu show'>
+        <li class='nav-link'>
+          <a href="/about">About</a>
+        </li>
+        <li class='nav-link'>
+          <a href="/">Articles</a>
+        </li>
+        <li class='nav-link logo'>
+          <a class="logo" href="/">GJ</a>
+        </li>
+        <li class='nav-link'>
+          <a target="_blank" href="https://github.com/gjaldon">Github</a>
+        </li>
+        <li class='nav-link'>
+          <a target="_blank" href="https://twitter.com/gjaldon">Twitter</a>
+        </li>
+      </ul>
+    </header>
+    <div class='wrapper'>
+      <main>
+        <article>
+          <h1 class='current-article-title'>Using JSON Type in Ecto</h1>
+          <div class='current-article-meta'>
+            by Gabriel Jaldon May 21, 2015
+            <a class='twitter-share-button' data-hashtags='elixirlang' data-via='gjaldon' href='https://twitter.com/share'>
+              Tweet
+            </a>
+            <script>
+              !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+            </script>
+          </div>
+          <hr>
+          <h2 id="introduction">Introduction</h2>
+          
+          <p>In a recent project, I had the chance to use JSON in <code>Ecto</code>. Although <code>Ecto</code> does not
+          currently support JSON, it does provide us with the capability to define custom
+          types. In this blog post, we'll go through how we can use the JSON type in <code>Ecto</code>.
+          Did I mention JSON enough already?</p>
+          
+          <h2 id="custom-ecto-type">Custom Ecto Type</h2>
+          
+          <p><code>Ecto</code> provides a behaviour module called <code>Ecto.Type</code>. It requires us to define four
+          functions in the module that uses it. These functions are <code>type</code>, <code>cast/1</code>, <code>load/1</code> and
+          <code>dump/1</code>. Note that these functions each expect a certain format in their return values
+          which you could review in the <a href="http://hexdocs.pm/ecto/Ecto.Type.html"><code>Ecto.Type</code> docs</a>.</p>
+          
+          <p>Let's go ahead and define our JSON Ecto type:</p>
+          
+          <pre class="highlight elixir"><code>
+          <span class="k">defmodule</span> <span class="no">MyApp</span><span class="o">.</span><span class="no">JSON</span> <span class="k">do</span>
+            <span class="nv">@behaviour</span> <span class="no">Ecto</span><span class="o">.</span><span class="no">Type</span>
+          
+            <span class="k">def</span> <span class="n">type</span><span class="p">,</span> <span class="k">do</span><span class="p">:</span> <span class="ss">:json</span>
+            <span class="k">def</span> <span class="n">cast</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="k">do</span><span class="p">:</span> <span class="p">{</span><span class="ss">:ok</span><span class="p">,</span> <span class="n">value</span><span class="p">}</span>
+            <span class="k">def</span> <span class="n">blank?</span><span class="p">(</span><span class="n">_</span><span class="p">),</span> <span class="k">do</span><span class="p">:</span> <span class="no">false</span>
+          
+            <span class="k">def</span> <span class="n">load</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">do</span>
+              <span class="p">{</span><span class="ss">:ok</span><span class="p">,</span> <span class="n">value</span><span class="p">}</span>
+            <span class="k">end</span>
+          
+            <span class="k">def</span> <span class="n">dump</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">do</span>
+              <span class="p">{</span><span class="ss">:ok</span><span class="p">,</span> <span class="n">value</span><span class="p">}</span>
+            <span class="k">end</span>
+          <span class="k">end</span>
+          </code></pre>
+          
+          <p>In here, we do not do any encoding or decoding of the JSON data. See that we pass just
+          <code>{:ok, value}</code> to both <code>load/1</code> and <code>dump/1</code> which are callback functions that get called
+          when loading data and dumping data to the database, respectively.</p>
+          
+          <p>This is because we will be doing the JSON serialization in <code>Postgrex</code>, which is the Postgres
+          adapter used by Ecto. It turns out, defining a custom Ecto type for JSON is not enough. If
+          we pass it as a type to a field in an Ecto model like <code>field :info, MyApp.JSON</code>, we will
+          get the error:</p>
+          
+          <pre class="highlight plaintext"><code>
+          ** (exit) an exception was raised:
+          ** (ArgumentError) no extension found for oid `114`
+              (postgrex) lib/postgrex/types.ex:285: Postgrex.Types.fetch!/2
+              ...
+          </code></pre>
+          
+          <p>The id <code>114</code> refers to the JSON data type in <code>Postgres</code> and this error just says that
+          Postgrex does not recognize that data type. But like <code>Ecto</code>, <code>Postgrex</code> can be extended
+          so it knows how to serialize Postgres types to and from Elixir values.</p>
+          
+          <h2 id="creating-a-postgrex-extension">Creating a Postgrex Extension</h2>
+          
+          <p>We will need to use the behaviour module <code>Postgrex.Extension</code> and define the five functions
+          it requires, which are <code>decode/4</code>, <code>encode/4</code>, <code>format/1</code>, <code>init/2</code>, and <code>matching/1</code>. To
+          learn more about what each of these callbacks expect, review the <a href="http://hexdocs.pm/postgrex/Postgrex.Extension.html"><code>Postgrex.Extension</code> docs</a>.</p>
+          
+          <p>Our Postgrex extension will be defined as:</p>
+          
+          <pre class="highlight elixir"><code>
+            <span class="k">defmodule</span> <span class="no">MyApp</span><span class="o">.</span><span class="no">JSONExtension</span> <span class="k">do</span>
+              <span class="n">alias</span> <span class="no">Postgrex</span><span class="o">.</span><span class="no">TypeInfo</span>
+          
+              <span class="nv">@behaviour</span> <span class="no">Postgrex</span><span class="o">.</span><span class="no">Extension</span>
+              <span class="nv">@json</span> <span class="p">[</span><span class="sd">"</span><span class="s2">json"</span><span class="p">,</span> <span class="sd">"</span><span class="s2">jsonb"</span><span class="p">]</span>
+          
+              <span class="k">def</span> <span class="n">init</span><span class="p">(</span><span class="n">_parameters</span><span class="p">,</span> <span class="n">opts</span><span class="p">),</span>
+                <span class="k">do</span><span class="p">:</span> <span class="no">Keyword</span><span class="o">.</span><span class="n">fetch!</span><span class="p">(</span><span class="n">opts</span><span class="p">,</span> <span class="ss">:library</span><span class="p">)</span>
+          
+              <span class="k">def</span> <span class="n">matching</span><span class="p">(</span><span class="n">_library</span><span class="p">),</span>
+                <span class="k">do</span><span class="p">:</span> <span class="p">[</span><span class="ss">type:</span> <span class="sd">"</span><span class="s2">json"</span><span class="p">,</span> <span class="ss">type:</span> <span class="sd">"</span><span class="s2">jsonb"</span><span class="p">]</span>
+          
+              <span class="k">def</span> <span class="n">format</span><span class="p">(</span><span class="n">_library</span><span class="p">),</span>
+                <span class="k">do</span><span class="p">:</span> <span class="ss">:binary</span>
+          
+              <span class="k">def</span> <span class="n">encode</span><span class="p">(%</span><span class="no">TypeInfo</span><span class="p">{</span><span class="ss">type:</span> <span class="sd">"</span><span class="s2">json"</span><span class="p">},</span> <span class="n">map</span><span class="p">,</span> <span class="n">_state</span><span class="p">,</span> <span class="n">library</span><span class="p">),</span>
+                <span class="k">do</span><span class="p">:</span> <span class="n">library</span><span class="o">.</span><span class="n">encode!</span><span class="p">(</span><span class="n">map</span><span class="p">)</span>
+              <span class="k">def</span> <span class="n">encode</span><span class="p">(%</span><span class="no">TypeInfo</span><span class="p">{</span><span class="ss">type:</span> <span class="sd">"</span><span class="s2">jsonb"</span><span class="p">},</span> <span class="n">map</span><span class="p">,</span> <span class="n">_state</span><span class="p">,</span> <span class="n">library</span><span class="p">),</span>
+                <span class="k">do</span><span class="p">:</span> <span class="o">&lt;&lt;</span><span class="m">1</span><span class="p">,</span> <span class="n">library</span><span class="o">.</span><span class="n">encode!</span><span class="p">(</span><span class="n">map</span><span class="p">)::</span><span class="n">binary</span><span class="o">&gt;&gt;</span>
+          
+              <span class="k">def</span> <span class="n">decode</span><span class="p">(%</span><span class="no">TypeInfo</span><span class="p">{</span><span class="ss">type:</span> <span class="sd">"</span><span class="s2">json"</span><span class="p">},</span> <span class="n">json</span><span class="p">,</span> <span class="n">_state</span><span class="p">,</span> <span class="n">library</span><span class="p">),</span>
+                <span class="k">do</span><span class="p">:</span> <span class="n">library</span><span class="o">.</span><span class="n">decode!</span><span class="p">(</span><span class="n">json</span><span class="p">)</span>
+              <span class="k">def</span> <span class="n">decode</span><span class="p">(%</span><span class="no">TypeInfo</span><span class="p">{</span><span class="ss">type:</span> <span class="sd">"</span><span class="s2">jsonb"</span><span class="p">},</span> <span class="o">&lt;&lt;</span><span class="m">1</span><span class="p">,</span> <span class="n">json</span><span class="p">::</span><span class="n">binary</span><span class="o">&gt;&gt;</span><span class="p">,</span> <span class="n">_state</span><span class="p">,</span> <span class="n">library</span><span class="p">),</span>
+                <span class="k">do</span><span class="p">:</span> <span class="n">library</span><span class="o">.</span><span class="n">decode!</span><span class="p">(</span><span class="n">json</span><span class="p">)</span>
+            <span class="k">end</span>
+          </code></pre>
+          
+          <p>What this module does is it accepts a JSON parser library and uses this library to encode
+          and decode JSON data. This extension makes <code>Postgrex</code> recognize both <code>json</code> and <code>jsonb</code>
+          data types.</p>
+          
+          <h2 id="configure-ecto-with-custom-extension">Configure Ecto with Custom Extension</h2>
+          
+          <p>Now how do we use <code>MyApp.Extension</code> in <code>Ecto</code>?</p>
+          
+          <p><code>Ecto</code> supports an <code>:extensions</code> option in its configuration which can be used like below:</p>
+          
+          <pre class="highlight elixir"><code>
+            <span class="n">config</span> <span class="ss">:my_app</span><span class="p">,</span> <span class="no">MyApp</span><span class="o">.</span><span class="no">Repo</span><span class="p">,</span>
+              <span class="ss">adapter:</span> <span class="no">Ecto</span><span class="o">.</span><span class="no">Adapters</span><span class="o">.</span><span class="no">Postgres</span><span class="p">,</span>
+              <span class="ss">extensions:</span> <span class="p">[{</span><span class="no">MyApp</span><span class="o">.</span><span class="no">JSONExtension</span><span class="p">,</span> <span class="p">[</span><span class="ss">library:</span> <span class="no">Poison</span><span class="p">]}],</span>
+              <span class="o">...</span>
+          </code></pre>
+          
+          <p>Make sure to pass a library option or else our custom JSON Extension will raise an error.
+          Also, we use <code>Poison</code> above but feel free to use whatever JSON parser library you are most
+          comfortable with.</p>
+          
+          <p>Using <code>field :info, MyApp.JSON</code> in one of our Ecto models and then restarting our app should
+          now work without error!</p>
+          
+          <h2 id="how-to-query-on-json-columns">How to Query on JSON Columns</h2>
+          
+          <p>Since <code>Ecto</code> does not yet have first-class support for JSON, we will need to rely on
+          the <code>fragment</code> helper when writing our <code>Ecto</code> queries. This enables us to send queries
+          directly to the database. For example:</p>
+          
+          <pre class="highlight elixir"><code>
+            <span class="n">from</span><span class="p">(</span><span class="no">User</span> <span class="ow">in</span> <span class="n">query</span><span class="p">,</span>
+              <span class="ss">where:</span> <span class="n">fragment</span><span class="p">(</span><span class="sd">"</span><span class="s2">?-&gt;&gt;'first_name' == ?"</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">info</span><span class="p">,</span> <span class="sd">"</span><span class="s2">John"</span><span class="p">))</span>
+          </code></pre>
+          
+          <p>The above query will filter our users and return only records with the value <code>"John"</code> as
+          <code>first_name</code> in their <code>info</code> column. We fallback to plain old PostgreSQL queries in our
+          <code>fragment</code>.</p>
+          
+          <h2 id="wrap-up">Wrap-up</h2>
+          
+          <p>At the moment, to support JSON we will need to define two modules to extend both <code>Postgrex</code>
+          and <code>Ecto</code>. Eventually, <code>Postgrex</code> will ship with out-of-the-box support for JSON so that will
+          minimize the set-up for using <code>Ecto</code>. Until then, it is easy to copy-paste code.</p>
+          
+          <p>Oh, and if you prefer to work with <code>jsonb</code> instead of <code>json</code>, just change the return value
+          of <code>type/1</code> in <code>MyApp.JSON</code> to <code>:jsonb</code> and you're good to go. The <code>MyApp.JSONExtension</code> already
+          extends <code>Postgrex</code> to support the <code>:jsonb</code> data type.</p>
+          
+          <h5 id="references">References:</h5>
+          
+          <ul>
+            <li>Where the above <a href="https://github.com/ericmj/postgrex#extensions" target="_blank">Postgrex Extension</a> was ripped from</li>
+            <li><a href="https://twitter.com/emjii" target="_blank">Eric</a> helped me get unstuck!</li>
+            <li><a href="http://clarkdave.net/2013/06/what-can-you-do-with-postgresql-and-json/" target="_blank">What can you do with Postgresql and JSON</a></li>
+          </ul>
+          <i>
+            Feel free to follow me on Twitter for more articles on Phoenix, Ecto and anything web development with Elixir.
+          </i>
+          <a class='twitter-follow-button' data-show-count='false' href='https://twitter.com/gjaldon'>
+            Follow @gjaldon
+          </a>
+          <script>
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+          </script>
+        </article>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+        //<![CDATA[
+                          var disqus_shortname = 'gjaldon';
+                  
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        //]]>
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        <script type="text/javascript">
+        //<![CDATA[
+            var disqus_shortname = 'gjaldon';
+            (function () {
+                var s = document.createElement('script'); s.async = true;
+                s.type = 'text/javascript';
+                s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+                (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+            }());
+        //]]>
+        </script>
+      </main>
+    </div>
+    <footer class='footer'>
+      <ul>
+        <li><a href="#">Twitter</a></li>
+        <li><a href="#">Github</a></li>
+        <li>© 2014</li>
+      </ul>
+    </footer>
+  </body>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-63049931-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</html>
