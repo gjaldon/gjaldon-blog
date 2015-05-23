@@ -111,6 +111,7 @@ Now how do we use `MyApp.Extension` in `Ecto`?
 `Ecto` supports an `:extensions` option in its configuration which can be used like below:
 
 ~~~elixir
+
   config :my_app, MyApp.Repo,
     adapter: Ecto.Adapters.Postgres,
     extensions: [{MyApp.JSONExtension, [library: Poison]}],
@@ -124,9 +125,39 @@ comfortable with.
 Using `field :info, MyApp.JSON` in one of our Ecto models and then restarting our app should
 now work without error!
 
+
 ## How to Query on JSON Columns
+
+Since `Ecto` does not yet have first-class support for JSON, we will need to rely on
+the `fragment` helper when writing our `Ecto` queries. This enables us to send queries
+directly to the database. For example:
+
+~~~elixir
+
+  from(User in query,
+    where: fragment("?->>'first_name' == ?", u.info, "John"))
+~~~
+
+The above query will filter our users and return only records with the value `"John"` as
+`first_name` in their `info` column. We fallback to plain old PostgreSQL queries in our
+`fragment`.
 
 
 ## Wrap-up
 
+At the moment, to support JSON we will need to define two modules to extend both `Postgrex`
+and `Ecto`. Eventually, `Postgrex` will ship with out-of-the-box support for JSON so that will
+minimize the set-up for using `Ecto`. Until then, it is easy to copy-paste code.
 
+Oh, and if you prefer to work with `jsonb` instead of `json`, just change the return value
+of `type/1` in `MyApp.JSON` to `:jsonb` and you're good to go. The `MyApp.JSONExtension` already
+extends `Postgrex` to support the `:jsonb` data type.
+
+Feel free to follow me on Twitter for more articles on Phoenix, Ecto and anything web development
+with Elixir.
+
+##### References:
+
+  - Where the above <a href="https://github.com/ericmj/postgrex#extensions" target="_blank">Postgrex Extension</a> was ripped from
+  - <a href="https://twitter.com/emjii" target="_blank">Eric</a> helped me get unstuck!
+  - <a href="http://clarkdave.net/2013/06/what-can-you-do-with-postgresql-and-json/" target="_blank">What can you do with Postgresql and JSON</a>
