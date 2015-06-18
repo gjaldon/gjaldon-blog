@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Gabriel Jaldon</title>
+  <subtitle>Articles on Web Development with Elixir and Phoenix</subtitle>
+  <id>http://gjaldon.com/articles</id>
+  <link href="http://gjaldon.com/articles"/>
+  <link href="http://gjaldon.com/feed.xml" rel="self"/>
+  <updated>2015-05-22T03:01:00+08:00</updated>
+  <author>
+    <name>Gabriel Jaldon</name>
+  </author>
+  <entry>
+    <title>Using JSON Type in Ecto</title>
+    <link rel="alternate" href="http://gjaldon.com/articles/using-json-type-in-ecto.html"/>
+    <id>http://gjaldon.com/articles/using-json-type-in-ecto.html</id>
+    <published>2015-05-22T03:01:00+08:00</published>
+    <updated>2015-05-24T00:49:28+08:00</updated>
+    <author>
+      <name>Gabriel Jaldon</name>
+    </author>
+    <content type="html">&lt;h2 id="introduction"&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;In a recent project, I had the chance to use JSON in &lt;code&gt;Ecto&lt;/code&gt;. Although &lt;code&gt;Ecto&lt;/code&gt; does not
+currently support JSON, it does provide us with the capability to define custom
+types. In this blog post, we'll go through how we can use the JSON type in &lt;code&gt;Ecto&lt;/code&gt;.
+Did I mention JSON enough already?&lt;/p&gt;
+
+&lt;h2 id="custom-ecto-type"&gt;Custom Ecto Type&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;Ecto&lt;/code&gt; provides a behaviour module called &lt;code&gt;Ecto.Type&lt;/code&gt;. It requires us to define four
+functions in the module that uses it. These functions are &lt;code&gt;type&lt;/code&gt;, &lt;code&gt;cast/1&lt;/code&gt;, &lt;code&gt;load/1&lt;/code&gt; and
+&lt;code&gt;dump/1&lt;/code&gt;. Note that these functions each expect a certain format in their return values
+which you could review in the &lt;a href="http://hexdocs.pm/ecto/Ecto.Type.html"&gt;&lt;code&gt;Ecto.Type&lt;/code&gt; docs&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let's go ahead and define our JSON Ecto type:&lt;/p&gt;
+
+&lt;pre class="highlight elixir"&gt;&lt;code&gt;
+&lt;span class="k"&gt;defmodule&lt;/span&gt; &lt;span class="no"&gt;MyApp&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;JSON&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+  &lt;span class="nv"&gt;@behaviour&lt;/span&gt; &lt;span class="no"&gt;Ecto&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;Type&lt;/span&gt;
+
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="ss"&gt;:json&lt;/span&gt;
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;cast&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;:ok&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;blank?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="no"&gt;false&lt;/span&gt;
+
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;load&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;:ok&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;dump&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;:ok&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In here, we do not do any encoding or decoding of the JSON data. See that we pass just
+&lt;code&gt;{:ok, value}&lt;/code&gt; to both &lt;code&gt;load/1&lt;/code&gt; and &lt;code&gt;dump/1&lt;/code&gt; which are callback functions that get called
+when loading data and dumping data to the database, respectively.&lt;/p&gt;
+
+&lt;p&gt;This is because we will be doing the JSON serialization in &lt;code&gt;Postgrex&lt;/code&gt;, which is the Postgres
+adapter used by Ecto. It turns out, defining a custom Ecto type for JSON is not enough. If
+we pass it as a type to a field in an Ecto model like &lt;code&gt;field :info, MyApp.JSON&lt;/code&gt;, we will
+get the error:&lt;/p&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;
+** (exit) an exception was raised:
+** (ArgumentError) no extension found for oid `114`
+    (postgrex) lib/postgrex/types.ex:285: Postgrex.Types.fetch!/2
+    ...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The id &lt;code&gt;114&lt;/code&gt; refers to the JSON data type in &lt;code&gt;Postgres&lt;/code&gt; and this error just says that
+Postgrex does not recognize that data type. But like &lt;code&gt;Ecto&lt;/code&gt;, &lt;code&gt;Postgrex&lt;/code&gt; can be extended
+so it knows how to serialize Postgres types to and from Elixir values.&lt;/p&gt;
+
+&lt;h2 id="creating-a-postgrex-extension"&gt;Creating a Postgrex Extension&lt;/h2&gt;
+
+&lt;p&gt;We will need to use the behaviour module &lt;code&gt;Postgrex.Extension&lt;/code&gt; and define the five functions
+it requires, which are &lt;code&gt;decode/4&lt;/code&gt;, &lt;code&gt;encode/4&lt;/code&gt;, &lt;code&gt;format/1&lt;/code&gt;, &lt;code&gt;init/2&lt;/code&gt;, and &lt;code&gt;matching/1&lt;/code&gt;. To
+learn more about what each of these callbacks expect, review the &lt;a href="http://hexdocs.pm/postgrex/Postgrex.Extension.html"&gt;&lt;code&gt;Postgrex.Extension&lt;/code&gt; docs&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Our Postgrex extension will be defined as:&lt;/p&gt;
+
+&lt;pre class="highlight elixir"&gt;&lt;code&gt;
+  &lt;span class="k"&gt;defmodule&lt;/span&gt; &lt;span class="no"&gt;MyApp&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;JSONExtension&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="n"&gt;alias&lt;/span&gt; &lt;span class="no"&gt;Postgrex&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;TypeInfo&lt;/span&gt;
+
+    &lt;span class="nv"&gt;@behaviour&lt;/span&gt; &lt;span class="no"&gt;Postgrex&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;Extension&lt;/span&gt;
+    &lt;span class="nv"&gt;@json&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;json"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;jsonb"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;init&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_parameters&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;opts&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+      &lt;span class="k"&gt;do&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="no"&gt;Keyword&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fetch!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;opts&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:library&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;matching&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_library&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+      &lt;span class="k"&gt;do&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;type:&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;json"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;type:&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;jsonb"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_library&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+      &lt;span class="k"&gt;do&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="ss"&gt;:binary&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;encode&lt;/span&gt;&lt;span class="p"&gt;(%&lt;/span&gt;&lt;span class="no"&gt;TypeInfo&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;type:&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;json"&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt; &lt;span class="n"&gt;map&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;_state&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;library&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+      &lt;span class="k"&gt;do&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;library&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;encode!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;map&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;encode&lt;/span&gt;&lt;span class="p"&gt;(%&lt;/span&gt;&lt;span class="no"&gt;TypeInfo&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;type:&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;jsonb"&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt; &lt;span class="n"&gt;map&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;_state&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;library&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+      &lt;span class="k"&gt;do&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;library&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;encode!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;map&lt;/span&gt;&lt;span class="p"&gt;)::&lt;/span&gt;&lt;span class="n"&gt;binary&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;decode&lt;/span&gt;&lt;span class="p"&gt;(%&lt;/span&gt;&lt;span class="no"&gt;TypeInfo&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;type:&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;json"&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt; &lt;span class="n"&gt;json&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;_state&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;library&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+      &lt;span class="k"&gt;do&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;library&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;decode!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;json&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;decode&lt;/span&gt;&lt;span class="p"&gt;(%&lt;/span&gt;&lt;span class="no"&gt;TypeInfo&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;type:&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;jsonb"&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;json&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="n"&gt;binary&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;_state&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;library&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+      &lt;span class="k"&gt;do&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;library&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;decode!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;json&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;What this module does is it accepts a JSON parser library and uses this library to encode
+and decode JSON data. This extension makes &lt;code&gt;Postgrex&lt;/code&gt; recognize both &lt;code&gt;json&lt;/code&gt; and &lt;code&gt;jsonb&lt;/code&gt;
+data types.&lt;/p&gt;
+
+&lt;h2 id="configure-ecto-with-custom-extension"&gt;Configure Ecto with Custom Extension&lt;/h2&gt;
+
+&lt;p&gt;Now how do we use &lt;code&gt;MyApp.Extension&lt;/code&gt; in &lt;code&gt;Ecto&lt;/code&gt;?&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Ecto&lt;/code&gt; supports an &lt;code&gt;:extensions&lt;/code&gt; option in its configuration which can be used like below:&lt;/p&gt;
+
+&lt;pre class="highlight elixir"&gt;&lt;code&gt;
+  &lt;span class="n"&gt;config&lt;/span&gt; &lt;span class="ss"&gt;:my_app&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;MyApp&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;Repo&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="ss"&gt;adapter:&lt;/span&gt; &lt;span class="no"&gt;Ecto&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;Adapters&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;Postgres&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="ss"&gt;extensions:&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="no"&gt;MyApp&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;JSONExtension&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;library:&lt;/span&gt; &lt;span class="no"&gt;Poison&lt;/span&gt;&lt;span class="p"&gt;]}],&lt;/span&gt;
+    &lt;span class="o"&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Make sure to pass a library option or else our custom JSON Extension will raise an error.
+Also, we use &lt;code&gt;Poison&lt;/code&gt; above but feel free to use whatever JSON parser library you are most
+comfortable with.&lt;/p&gt;
+
+&lt;p&gt;Using &lt;code&gt;field :info, MyApp.JSON&lt;/code&gt; in one of our Ecto models and then restarting our app should
+now work without error!&lt;/p&gt;
+
+&lt;h2 id="how-to-query-on-json-columns"&gt;How to Query on JSON Columns&lt;/h2&gt;
+
+&lt;p&gt;Since &lt;code&gt;Ecto&lt;/code&gt; does not yet have first-class support for JSON, we will need to rely on
+the &lt;code&gt;fragment&lt;/code&gt; helper when writing our &lt;code&gt;Ecto&lt;/code&gt; queries. This enables us to send queries
+directly to the database. For example:&lt;/p&gt;
+
+&lt;pre class="highlight elixir"&gt;&lt;code&gt;
+  &lt;span class="n"&gt;from&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="no"&gt;User&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;query&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="ss"&gt;where:&lt;/span&gt; &lt;span class="n"&gt;fragment&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;?-&amp;gt;&amp;gt;'first_name' == ?"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;u&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;John"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The above query will filter our users and return only records with the value &lt;code&gt;"John"&lt;/code&gt; as
+&lt;code&gt;first_name&lt;/code&gt; in their &lt;code&gt;info&lt;/code&gt; column. We fallback to plain old PostgreSQL queries in our
+&lt;code&gt;fragment&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id="wrap-up"&gt;Wrap-up&lt;/h2&gt;
+
+&lt;p&gt;At the moment, to support JSON we will need to define two modules to extend both &lt;code&gt;Postgrex&lt;/code&gt;
+and &lt;code&gt;Ecto&lt;/code&gt;. Eventually, &lt;code&gt;Postgrex&lt;/code&gt; will ship with out-of-the-box support for JSON so that will
+minimize the set-up for using &lt;code&gt;Ecto&lt;/code&gt;. Until then, it is easy to copy-paste code.&lt;/p&gt;
+
+&lt;p&gt;Oh, and if you prefer to work with &lt;code&gt;jsonb&lt;/code&gt; instead of &lt;code&gt;json&lt;/code&gt;, just change the return value
+of &lt;code&gt;type/1&lt;/code&gt; in &lt;code&gt;MyApp.JSON&lt;/code&gt; to &lt;code&gt;:jsonb&lt;/code&gt; and you're good to go. The &lt;code&gt;MyApp.JSONExtension&lt;/code&gt; already
+extends &lt;code&gt;Postgrex&lt;/code&gt; to support the &lt;code&gt;:jsonb&lt;/code&gt; data type.&lt;/p&gt;
+
+&lt;h5 id="references"&gt;References:&lt;/h5&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Where the above &lt;a href="https://github.com/ericmj/postgrex#extensions" target="_blank"&gt;Postgrex Extension&lt;/a&gt; was ripped from&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://twitter.com/emjii" target="_blank"&gt;Eric&lt;/a&gt; helped me get unstuck!&lt;/li&gt;
+  &lt;li&gt;&lt;a href="http://clarkdave.net/2013/06/what-can-you-do-with-postgresql-and-json/" target="_blank"&gt;What can you do with Postgresql and JSON&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+  </entry>
+  <entry>
+    <title>Deploying Phoenix with Git</title>
+    <link rel="alternate" href="http://gjaldon.com/articles/deploying-phoenix-with-git.html"/>
+    <id>http://gjaldon.com/articles/deploying-phoenix-with-git.html</id>
+    <published>2015-05-14T20:34:00+08:00</published>
+    <updated>2015-05-22T03:34:40+08:00</updated>
+    <author>
+      <name>Gabriel Jaldon</name>
+    </author>
+    <content type="html">&lt;h2 id="introduction"&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;I have always enjoyed the experience of doing Heroku-like &lt;code&gt;git push&lt;/code&gt; deploys and just
+recently set up deployment for my Phoenix application. It turns out, setting this
+up doesn't take too much time and immediately pays dividends. In this article
+I'll show you how to set up your server so that it automatically does the
+following:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Deploy the app to the server&lt;/li&gt;
+  &lt;li&gt;Install all dependencies&lt;/li&gt;
+  &lt;li&gt;Build production assets&lt;/li&gt;
+  &lt;li&gt;Run all Ecto migrations&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Throughout this tutorial we will assume a VPS that uses Ubuntu.&lt;/p&gt;
+
+&lt;h2 id="configure-server-for-the-application"&gt;Configure Server for the Application&lt;/h2&gt;
+
+&lt;p&gt;Since we are not building a &lt;a href="https://github.com/bitwalker/exrm"&gt;release&lt;/a&gt;, we will need
+to install the dependencies so that Phoenix can run its mix tasks and build its assets.
+A default Phoenix app will need the following installed:&lt;/p&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;
+wget http://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb &amp;amp;&amp;amp; sudo dpkg -i erlang-solutions_1.0_all.deb
+sudo apt-get update
+sudo apt-get install elixir nodes-legacy npm postgresql postgresql-contrib
+npm install -g brunch
+sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We need &lt;code&gt;node&lt;/code&gt;, &lt;code&gt;npm&lt;/code&gt; and &lt;code&gt;brunch&lt;/code&gt; since they come as the default build tool for Phoenix.
+We also redirect connections from &lt;code&gt;port 80&lt;/code&gt; to &lt;code&gt;port 8080&lt;/code&gt; since we will have the
+app listen to &lt;code&gt;port 8080&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id="server-as-remote-git-repository"&gt;Server as Remote Git Repository&lt;/h2&gt;
+
+&lt;p&gt;For us to be able to push our code to the server, we will need to configure it as a
+remote repository. To do this, you will need to do the following from your VPS:&lt;/p&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;
+cd /var
+mkdir repo &amp;amp;&amp;amp; cd repo
+mkdir app.git &amp;amp;&amp;amp; cd app.git
+git init --bare
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;From our local machine, we could push code to the server by doing:&lt;/p&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;
+git remote add production ssh://user@yourserver/var/repo/app.git
+git push production master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Inspecting your VPS's &lt;code&gt;/var/repo/app.git&lt;/code&gt; directory, you will see that there are no source
+files there from your app. This is due to the &lt;code&gt;--bare&lt;/code&gt; option we passed earlier. Remote
+repositories are usually bare repositories since they are meant to accept code pushes
+from different collaborators. Having a working directory of your app in the bare repo will
+just lead to conflicts.&lt;/p&gt;
+
+&lt;p&gt;So how do we deploy the app when we don't have its source available after a &lt;code&gt;git push&lt;/code&gt;?&lt;/p&gt;
+
+&lt;h2 id="the-post-receive-hook"&gt;The Post-Receive Hook&lt;/h2&gt;
+
+&lt;p&gt;Git provides &lt;a href="http://git-scm.com/book/en/Customizing-Git-Git-Hooks"&gt;hooks&lt;/a&gt; that get run after
+certain actions. The hook we want is the &lt;code&gt;post-receive&lt;/code&gt; hook since it gets triggered every
+time your server receives a push.&lt;/p&gt;
+
+&lt;p&gt;In the VPS, we do the following:&lt;/p&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;
+mkdir -p /var/www/app.com
+cd /var/repo/app.git/hooks
+vim post-receive
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Feel free to use whatever editor you like. From the editor, type:&lt;/p&gt;
+
+&lt;pre class="highlight shell"&gt;&lt;code&gt;
+&lt;span class="c"&gt;#!/bin/sh&lt;/span&gt;
+git --work-tree&lt;span class="o"&gt;=&lt;/span&gt;/var/www/app.com --git-dir&lt;span class="o"&gt;=&lt;/span&gt;/var/repo/site.git checkout -f
+&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; /var/www/app.com &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;
+  npm install &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;
+  bower install &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;
+  brunch build --production &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;
+  mix phoenix.digest &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;
+  &lt;span class="nv"&gt;MIX_ENV&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;prod &lt;span class="nv"&gt;PORT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;8888 mix &lt;span class="k"&gt;do &lt;/span&gt;deps.get, deps.compile, ecto.migrate &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;
+  &lt;span class="nv"&gt;MIX_ENV&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;prod &lt;span class="nv"&gt;PORT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;8080 elixir --detached -S mix phoenix.server&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The &lt;code&gt;git&lt;/code&gt; line checks out the source files of our app to the &lt;code&gt;/var/www/app.com&lt;/code&gt; directory.
+We can then serve our app from that directory later on.&lt;/p&gt;
+
+&lt;p&gt;The last line starts our app on &lt;code&gt;port 8080&lt;/code&gt; in detached mode if it hasn't started yet. You
+may change port you want your app to listen on.&lt;/p&gt;
+
+&lt;p&gt;The other commands will install all of our app's dependencies, build all its assets, and
+run all the Ecto migrations every time we &lt;code&gt;git push&lt;/code&gt; to the repo.&lt;/p&gt;
+
+&lt;p&gt;One last thing:&lt;/p&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;
+chmod +x /hooks/post-receive
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The above command makes sure we can execute the &lt;code&gt;post-receive&lt;/code&gt; file.&lt;/p&gt;
+
+&lt;h2 id="configure-the-database"&gt;Configure the Database&lt;/h2&gt;
+
+&lt;p&gt;We need to create the production database for our app and configure it in Phoenix
+so Ecto can access it.&lt;/p&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;
+sudo -u postgres createuser --superuser $USER
+sudo -u postgres psql
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Using the postgres role, we created a new role with the same name as your login name.
+We then access psql as the postgres user to set the password for the new role. Take
+note of the login name and the new password since we will use this later for configuring
+Ecto.&lt;/p&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;
+postgres=# \password $USER
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then we can create the production database.&lt;/p&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;
+createdb app
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Next, we configure Ecto so it can access our production database.&lt;/p&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;
+vim /var/www/app.com/config/prod.secret.exs
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The file will look like:&lt;/p&gt;
+
+&lt;pre class="highlight elixir"&gt;&lt;code&gt;
+&lt;span class="n"&gt;config&lt;/span&gt; &lt;span class="ss"&gt;:app&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="no"&gt;App&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;Repo&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="ss"&gt;adapter:&lt;/span&gt; &lt;span class="no"&gt;Ecto&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;Adapters&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;Postgres&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="ss"&gt;username:&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;your_login_name"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="ss"&gt;password:&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;your_password"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="ss"&gt;database:&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;app"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="ss"&gt;size:&lt;/span&gt; &lt;span class="m"&gt;20&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Replace the &lt;code&gt;username&lt;/code&gt;, &lt;code&gt;password&lt;/code&gt; and &lt;code&gt;database&lt;/code&gt; options with new ones we created earlier
+through &lt;code&gt;psql&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id="test-and-deploy"&gt;Test and Deploy&lt;/h2&gt;
+
+&lt;p&gt;Congratulations! You can now do &lt;code&gt;git push&lt;/code&gt; deploys to your server with:&lt;/p&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;
+git push production master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You should be able to see all the installs, builds and migration commands running after
+the &lt;code&gt;git push&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;If you have no new code to push yet and want to test if your &lt;code&gt;post-receive&lt;/code&gt; hook works,
+you can do below from your VPS:&lt;/p&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;
+cd /var/repo/app.git
+git log -2 --format=oneline --reverse
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Get the sha for the 2 commits and replace them with &lt;code&gt;$SHA1&lt;/code&gt; and &lt;code&gt;$SHA2&lt;/code&gt; below:&lt;/p&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;
+echo "$SHA1 $SHA2 master" | ./hooks/post-receive
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Voila! You get to test if your &lt;code&gt;post-receive&lt;/code&gt; hook works without pushing any code!&lt;/p&gt;
+
+&lt;p&gt;I found this deployment strategy to be simple to set up and wrap my head around. It
+made it easy to ship code to production without the overhead of learning another tool.&lt;/p&gt;
+
+&lt;p&gt;Feel free to share your deployment strategy and let me know if you have any questions
+or feedback. Looking forward to hearing from you!&lt;/p&gt;
+
+&lt;h5 id="references"&gt;References:&lt;/h5&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-automatic-deployment-with-git-with-a-vps" target="_blank"&gt;How To Set Up Automatic Deployment with Git with a VPS&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="http://www.phoenixframework.org/v0.12.0/docs/advanced-deployment" target="_blank"&gt;Phoenix Advanced Deployment&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="http://git-scm.com/book/ca/v1/Git-on-the-Server" target="_blank"&gt;Git on the Server&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="http://krisjordan.com/essays/setting-up-push-to-deploy-with-git" target="_blank"&gt;Setting up Push-to-Deploy with git&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+  </entry>
+</feed>
