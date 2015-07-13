@@ -43,6 +43,41 @@
             </script>
           </div>
           <hr>
+          <p>last updated: July 14, 2015</p>
+          
+          <h2 id="update">Update</h2>
+          
+          <p>As of Ecto v0.13.0, <code>:map</code> type is already supported and is a <code>jsonb</code> column when using Postgres.
+          For other databases, a <code>text</code> column is used that emulates <code>json</code>. This means you can now just
+          do the following to use <code>jsonb</code>:</p>
+          
+          <pre class="highlight elixir"><code>
+          <span class="c1"># migration</span>
+          
+          <span class="k">defmodule</span> <span class="no">MyApp</span><span class="o">.</span><span class="no">UserMigration</span> <span class="k">do</span>
+            <span class="kn">use</span> <span class="no">Ecto</span><span class="o">.</span><span class="no">Migration</span>
+          
+            <span class="k">def</span> <span class="n">change</span> <span class="k">do</span>
+              <span class="n">create</span> <span class="n">table</span><span class="p">(</span><span class="ss">:users</span><span class="p">)</span> <span class="k">do</span>
+                <span class="n">add</span> <span class="ss">:meta</span><span class="p">,</span> <span class="ss">:map</span>
+              <span class="k">end</span>
+            <span class="k">end</span>
+          <span class="k">end</span>
+          
+          <span class="c1"># model</span>
+          
+          <span class="k">defmodule</span> <span class="no">MyApp</span><span class="o">.</span><span class="no">User</span> <span class="k">do</span>
+            <span class="kn">use</span> <span class="no">Ecto</span><span class="o">.</span><span class="no">Model</span>
+          
+            <span class="n">schema</span> <span class="sd">"</span><span class="s2">users"</span> <span class="k">do</span>
+              <span class="n">field</span> <span class="ss">:meta</span><span class="p">,</span> <span class="ss">:map</span>
+            <span class="k">end</span>
+          <span class="k">end</span>
+          </code></pre>
+          
+          <p>Simple! Keep in mind though that there isn't yet first-class support for queries on map fields.
+          For that, you will still have to rely on <code>fragment/2</code>. If you want to use a <code>json</code> column (not <code>jsonb</code>), you will still need to create a <a href="/articles/using-json-type-in-ecto.html#custom-ecto-type">custom ecto type</a> but can skip <a href="/articles/using-json-type-in-ecto.html#creating-a-postgrex-extension">creating a Postgrex extension</a> and <a href="/articles/using-json-type-in-ecto.html#configure-ecto-with-custom-extension">configuring Ecto with a custom extension</a>.</p>
+          
           <h2 id="introduction">Introduction</h2>
           
           <p>In a recent project, I had the chance to use JSON in <code>Ecto</code>. Although <code>Ecto</code> does not

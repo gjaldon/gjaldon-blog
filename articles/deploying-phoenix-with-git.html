@@ -43,6 +43,8 @@
             </script>
           </div>
           <hr>
+          <p>last updated: July 14, 2015</p>
+          
           <h2 id="introduction">Introduction</h2>
           
           <p>I have always enjoyed the experience of doing Heroku-like <code>git push</code> deploys and just
@@ -122,15 +124,34 @@
           <p>Feel free to use whatever editor you like. From the editor, type:</p>
           
           <pre class="highlight shell"><code>
-          <span class="c">#!/bin/sh</span>
+          <span class="c">#!/bin/bash</span>
           git --work-tree<span class="o">=</span>/var/www/app.com --git-dir<span class="o">=</span>/var/repo/site.git checkout -f
-          <span class="o">(</span><span class="nb">cd</span> /var/www/app.com <span class="o">&amp;&amp;</span>
-            npm install <span class="o">&amp;&amp;</span>
-            bower install <span class="o">&amp;&amp;</span>
-            brunch build --production <span class="o">&amp;&amp;</span>
-            mix phoenix.digest <span class="o">&amp;&amp;</span>
-            <span class="nv">MIX_ENV</span><span class="o">=</span>prod <span class="nv">PORT</span><span class="o">=</span>8888 mix <span class="k">do </span>deps.get, deps.compile, ecto.migrate <span class="o">&amp;&amp;</span>
-            <span class="nv">MIX_ENV</span><span class="o">=</span>prod <span class="nv">PORT</span><span class="o">=</span>8080 elixir --detached -S mix phoenix.server<span class="o">)</span>
+          <span class="nb">cd</span> /var/www/app.com
+          npm install <span class="o">&amp;&amp;</span>
+            node_modules/bower/bin/bower install <span class="o">&amp;&amp;</span>
+            node_modules/brunch/bin/brunch build --production
+          
+          <span class="k">if</span> <span class="o">[</span> <span class="nv">$PORT</span> <span class="o">=</span> 8080 <span class="o">]</span>; <span class="k">then
+            </span><span class="nv">PORT</span><span class="o">=</span>8888 mix <span class="k">do </span>deps.get, deps.compile, phoenix.digest, ecto.migrate <span class="o">&amp;&amp;</span>
+              <span class="nv">PORT</span><span class="o">=</span>8081 elixir --detached -S mix phoenix.server <span class="o">&amp;&amp;</span>
+              sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8081
+            sleep 5 <span class="o">&amp;&amp;</span> sudo iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
+            <span class="nv">previous_port</span><span class="o">=</span><span class="k">$(</span>sudo lsof -t -i:8080<span class="k">)</span>
+            <span class="k">if</span> <span class="o">[</span> -n <span class="nv">$previous_port</span> <span class="o">]</span>; <span class="k">then
+              </span>sudo <span class="nb">kill</span> <span class="nv">$previous_port</span>
+            <span class="k">fi
+            </span><span class="nb">echo</span> <span class="s1">'export PORT=8081'</span> &gt; /etc/profile.d/PORT.sh
+          <span class="k">else
+            </span><span class="nv">PORT</span><span class="o">=</span>8888 mix <span class="k">do </span>phoenix.digest, deps.get, deps.compile, ecto.migrate <span class="o">&amp;&amp;</span>
+              <span class="nv">PORT</span><span class="o">=</span>8080 elixir --detached -S mix phoenix.server <span class="o">&amp;&amp;</span>
+              sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
+            sleep 5 <span class="o">&amp;&amp;</span> sudo iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8081
+            <span class="nv">previous_port</span><span class="o">=</span><span class="k">$(</span>sudo lsof -t -i:8081<span class="k">)</span>
+            <span class="k">if</span> <span class="o">[</span> -n <span class="nv">$previous_port</span> <span class="o">]</span>; <span class="k">then
+              </span>sudo <span class="nb">kill</span> <span class="nv">$previous_port</span>
+            <span class="k">fi
+            </span><span class="nb">echo</span> <span class="s1">'export PORT=8080'</span> &gt; /etc/profile.d/PORT.sh
+          <span class="k">fi</span>
           </code></pre>
           
           <p>The <code>git</code> line checks out the source files of our app to the <code>/var/www/app.com</code> directory.

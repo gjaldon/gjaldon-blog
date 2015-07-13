@@ -14,11 +14,46 @@
     <link rel="alternate" href="http://gjaldon.com/articles/using-json-type-in-ecto.html"/>
     <id>http://gjaldon.com/articles/using-json-type-in-ecto.html</id>
     <published>2015-05-22T03:01:00+08:00</published>
-    <updated>2015-05-24T00:49:28+08:00</updated>
+    <updated>2015-07-14T06:08:21+08:00</updated>
     <author>
       <name>Gabriel Jaldon</name>
     </author>
-    <content type="html">&lt;h2 id="introduction"&gt;Introduction&lt;/h2&gt;
+    <content type="html">&lt;p&gt;last updated: July 14, 2015&lt;/p&gt;
+
+&lt;h2 id="update"&gt;Update&lt;/h2&gt;
+
+&lt;p&gt;As of Ecto v0.13.0, &lt;code&gt;:map&lt;/code&gt; type is already supported and is a &lt;code&gt;jsonb&lt;/code&gt; column when using Postgres.
+For other databases, a &lt;code&gt;text&lt;/code&gt; column is used that emulates &lt;code&gt;json&lt;/code&gt;. This means you can now just
+do the following to use &lt;code&gt;jsonb&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre class="highlight elixir"&gt;&lt;code&gt;
+&lt;span class="c1"&gt;# migration&lt;/span&gt;
+
+&lt;span class="k"&gt;defmodule&lt;/span&gt; &lt;span class="no"&gt;MyApp&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;UserMigration&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+  &lt;span class="kn"&gt;use&lt;/span&gt; &lt;span class="no"&gt;Ecto&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;Migration&lt;/span&gt;
+
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="n"&gt;change&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="n"&gt;create&lt;/span&gt; &lt;span class="n"&gt;table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:users&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+      &lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="ss"&gt;:meta&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:map&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+
+&lt;span class="c1"&gt;# model&lt;/span&gt;
+
+&lt;span class="k"&gt;defmodule&lt;/span&gt; &lt;span class="no"&gt;MyApp&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;User&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+  &lt;span class="kn"&gt;use&lt;/span&gt; &lt;span class="no"&gt;Ecto&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="no"&gt;Model&lt;/span&gt;
+
+  &lt;span class="n"&gt;schema&lt;/span&gt; &lt;span class="sd"&gt;"&lt;/span&gt;&lt;span class="s2"&gt;users"&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="n"&gt;field&lt;/span&gt; &lt;span class="ss"&gt;:meta&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:map&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Simple! Keep in mind though that there isn't yet first-class support for queries on map fields.
+For that, you will still have to rely on &lt;code&gt;fragment/2&lt;/code&gt;. If you want to use a &lt;code&gt;json&lt;/code&gt; column (not &lt;code&gt;jsonb&lt;/code&gt;), you will still need to create a &lt;a href="/articles/using-json-type-in-ecto.html#custom-ecto-type"&gt;custom ecto type&lt;/a&gt; but can skip &lt;a href="/articles/using-json-type-in-ecto.html#creating-a-postgrex-extension"&gt;creating a Postgrex extension&lt;/a&gt; and &lt;a href="/articles/using-json-type-in-ecto.html#configure-ecto-with-custom-extension"&gt;configuring Ecto with a custom extension&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id="introduction"&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;In a recent project, I had the chance to use JSON in &lt;code&gt;Ecto&lt;/code&gt;. Although &lt;code&gt;Ecto&lt;/code&gt; does not
 currently support JSON, it does provide us with the capability to define custom
@@ -171,11 +206,13 @@ extends &lt;code&gt;Postgrex&lt;/code&gt; to support the &lt;code&gt;:jsonb&lt;/
     <link rel="alternate" href="http://gjaldon.com/articles/deploying-phoenix-with-git.html"/>
     <id>http://gjaldon.com/articles/deploying-phoenix-with-git.html</id>
     <published>2015-05-14T20:34:00+08:00</published>
-    <updated>2015-05-22T03:34:40+08:00</updated>
+    <updated>2015-07-14T05:45:19+08:00</updated>
     <author>
       <name>Gabriel Jaldon</name>
     </author>
-    <content type="html">&lt;h2 id="introduction"&gt;Introduction&lt;/h2&gt;
+    <content type="html">&lt;p&gt;last updated: July 14, 2015&lt;/p&gt;
+
+&lt;h2 id="introduction"&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;I have always enjoyed the experience of doing Heroku-like &lt;code&gt;git push&lt;/code&gt; deploys and just
 recently set up deployment for my Phoenix application. It turns out, setting this
@@ -254,15 +291,34 @@ vim post-receive
 &lt;p&gt;Feel free to use whatever editor you like. From the editor, type:&lt;/p&gt;
 
 &lt;pre class="highlight shell"&gt;&lt;code&gt;
-&lt;span class="c"&gt;#!/bin/sh&lt;/span&gt;
+&lt;span class="c"&gt;#!/bin/bash&lt;/span&gt;
 git --work-tree&lt;span class="o"&gt;=&lt;/span&gt;/var/www/app.com --git-dir&lt;span class="o"&gt;=&lt;/span&gt;/var/repo/site.git checkout -f
-&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; /var/www/app.com &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;
-  npm install &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;
-  bower install &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;
-  brunch build --production &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;
-  mix phoenix.digest &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;
-  &lt;span class="nv"&gt;MIX_ENV&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;prod &lt;span class="nv"&gt;PORT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;8888 mix &lt;span class="k"&gt;do &lt;/span&gt;deps.get, deps.compile, ecto.migrate &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;
-  &lt;span class="nv"&gt;MIX_ENV&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;prod &lt;span class="nv"&gt;PORT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;8080 elixir --detached -S mix phoenix.server&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;cd&lt;/span&gt; /var/www/app.com
+npm install &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;
+  node_modules/bower/bin/bower install &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;
+  node_modules/brunch/bin/brunch build --production
+
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$PORT&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; 8080 &lt;span class="o"&gt;]&lt;/span&gt;; &lt;span class="k"&gt;then
+  &lt;/span&gt;&lt;span class="nv"&gt;PORT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;8888 mix &lt;span class="k"&gt;do &lt;/span&gt;deps.get, deps.compile, phoenix.digest, ecto.migrate &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;
+    &lt;span class="nv"&gt;PORT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;8081 elixir --detached -S mix phoenix.server &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;
+    sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8081
+  sleep 5 &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
+  &lt;span class="nv"&gt;previous_port&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;sudo lsof -t -i:8080&lt;span class="k"&gt;)&lt;/span&gt;
+  &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; -n &lt;span class="nv"&gt;$previous_port&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;; &lt;span class="k"&gt;then
+    &lt;/span&gt;sudo &lt;span class="nb"&gt;kill&lt;/span&gt; &lt;span class="nv"&gt;$previous_port&lt;/span&gt;
+  &lt;span class="k"&gt;fi
+  &lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s1"&gt;'export PORT=8081'&lt;/span&gt; &amp;gt; /etc/profile.d/PORT.sh
+&lt;span class="k"&gt;else
+  &lt;/span&gt;&lt;span class="nv"&gt;PORT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;8888 mix &lt;span class="k"&gt;do &lt;/span&gt;phoenix.digest, deps.get, deps.compile, ecto.migrate &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;
+    &lt;span class="nv"&gt;PORT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;8080 elixir --detached -S mix phoenix.server &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;
+    sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
+  sleep 5 &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8081
+  &lt;span class="nv"&gt;previous_port&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;sudo lsof -t -i:8081&lt;span class="k"&gt;)&lt;/span&gt;
+  &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; -n &lt;span class="nv"&gt;$previous_port&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;; &lt;span class="k"&gt;then
+    &lt;/span&gt;sudo &lt;span class="nb"&gt;kill&lt;/span&gt; &lt;span class="nv"&gt;$previous_port&lt;/span&gt;
+  &lt;span class="k"&gt;fi
+  &lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s1"&gt;'export PORT=8080'&lt;/span&gt; &amp;gt; /etc/profile.d/PORT.sh
+&lt;span class="k"&gt;fi&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;The &lt;code&gt;git&lt;/code&gt; line checks out the source files of our app to the &lt;code&gt;/var/www/app.com&lt;/code&gt; directory.
