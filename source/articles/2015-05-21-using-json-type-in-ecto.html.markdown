@@ -4,6 +4,42 @@ date: 2015-05-21 19:01 UTC
 tags: elixir, ecto
 ---
 
+last updated: July 14, 2015
+
+## Update
+
+As of Ecto v0.13.0, `:map` type is already supported and is a `jsonb` column when using Postgres.
+For other databases, a `text` column is used that emulates `json`. This means you can now just
+do the following to use `jsonb`:
+
+~~~elixir
+
+# migration
+
+defmodule MyApp.UserMigration do
+  use Ecto.Migration
+
+  def change do
+    create table(:users) do
+      add :meta, :map
+    end
+  end
+end
+
+# model
+
+defmodule MyApp.User do
+  use Ecto.Model
+
+  schema "users" do
+    field :meta, :map
+  end
+end
+~~~
+
+Simple! Keep in mind though that there isn't yet first-class support for queries on map fields.
+For that, you will still have to rely on `fragment/2`. If you want to use a `json` column (not `jsonb`), you will still need to create a [custom ecto type](/articles/using-json-type-in-ecto.html#custom-ecto-type) but can skip [creating a Postgrex extension](/articles/using-json-type-in-ecto.html#creating-a-postgrex-extension) and [configuring Ecto with a custom extension](/articles/using-json-type-in-ecto.html#configure-ecto-with-custom-extension).
+
 ## Introduction
 
 In a recent project, I had the chance to use JSON in `Ecto`. Although `Ecto` does not

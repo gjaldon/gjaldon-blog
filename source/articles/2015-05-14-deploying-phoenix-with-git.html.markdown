@@ -4,6 +4,8 @@ date: 2015-05-14 12:34 UTC
 tags: elixir, phoenix, deployment
 ---
 
+last updated: July 14, 2015
+
 ## Introduction
 
 I have always enjoyed the experience of doing Heroku-like `git push` deploys and just
@@ -89,15 +91,34 @@ Feel free to use whatever editor you like. From the editor, type:
 
 ~~~
 
-#!/bin/sh
+#!/bin/bash
 git --work-tree=/var/www/app.com --git-dir=/var/repo/site.git checkout -f
-(cd /var/www/app.com &&
-  npm install &&
-  bower install &&
-  brunch build --production &&
-  mix phoenix.digest &&
-  MIX_ENV=prod PORT=8888 mix do deps.get, deps.compile, ecto.migrate &&
-  MIX_ENV=prod PORT=8080 elixir --detached -S mix phoenix.server)
+cd /var/www/app.com
+npm install &&
+  node_modules/bower/bin/bower install &&
+  node_modules/brunch/bin/brunch build --production
+
+if [ $PORT = 8080 ]; then
+  PORT=8888 mix do deps.get, deps.compile, phoenix.digest, ecto.migrate &&
+    PORT=8081 elixir --detached -S mix phoenix.server &&
+    sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8081
+  sleep 5 && sudo iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
+  previous_port=$(sudo lsof -t -i:8080)
+  if [ -n $previous_port ]; then
+    sudo kill $previous_port
+  fi
+  echo 'export PORT=8081' > /etc/profile.d/PORT.sh
+else
+  PORT=8888 mix do phoenix.digest, deps.get, deps.compile, ecto.migrate &&
+    PORT=8080 elixir --detached -S mix phoenix.server &&
+    sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
+  sleep 5 && sudo iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8081
+  previous_port=$(sudo lsof -t -i:8081)
+  if [ -n $previous_port ]; then
+    sudo kill $previous_port
+  fi
+  echo 'export PORT=8080' > /etc/profile.d/PORT.sh
+fi
 ~~~
 
 The `git` line checks out the source files of our app to the `/var/www/app.com` directory.
