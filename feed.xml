@@ -2,17 +2,17 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Gabriel Jaldon</title>
   <subtitle>Articles on Web Development with Elixir and Phoenix</subtitle>
-  <id>http://gjaldon.com/articles</id>
-  <link href="http://gjaldon.com/articles"/>
-  <link href="http://gjaldon.com/feed.xml" rel="self"/>
+  <id>http://gabrieljaldon.com/articles</id>
+  <link href="http://gabrieljaldon.com/articles"/>
+  <link href="http://gabrieljaldon.com/feed.xml" rel="self"/>
   <updated>2015-05-22T03:01:00+08:00</updated>
   <author>
     <name>Gabriel Jaldon</name>
   </author>
   <entry>
     <title>Using JSON Type in Ecto</title>
-    <link rel="alternate" href="http://gjaldon.com/articles/using-json-type-in-ecto.html"/>
-    <id>http://gjaldon.com/articles/using-json-type-in-ecto.html</id>
+    <link rel="alternate" href="http://gabrieljaldon.com/articles/using-json-type-in-ecto.html"/>
+    <id>http://gabrieljaldon.com/articles/using-json-type-in-ecto.html</id>
     <published>2015-05-22T03:01:00+08:00</published>
     <updated>2015-07-14T06:08:21+08:00</updated>
     <author>
@@ -203,8 +203,8 @@ extends &lt;code&gt;Postgrex&lt;/code&gt; to support the &lt;code&gt;:jsonb&lt;/
   </entry>
   <entry>
     <title>Deploying Phoenix with Git</title>
-    <link rel="alternate" href="http://gjaldon.com/articles/deploying-phoenix-with-git.html"/>
-    <id>http://gjaldon.com/articles/deploying-phoenix-with-git.html</id>
+    <link rel="alternate" href="http://gabrieljaldon.com/articles/deploying-phoenix-with-git.html"/>
+    <id>http://gabrieljaldon.com/articles/deploying-phoenix-with-git.html</id>
     <published>2015-05-14T20:34:00+08:00</published>
     <updated>2015-07-14T05:45:19+08:00</updated>
     <author>
