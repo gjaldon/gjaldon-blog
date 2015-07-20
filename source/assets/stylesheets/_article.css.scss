@@ -40,9 +40,17 @@
 
 article {
   margin: 50px 0;
+  padding: 0 50px;
 
   p {
     text-align: justify;
+  }
+}
+
+@media (max-width: 768px) {
+  article {
+    margin: 20px 0;
+    padding: 0;
   }
 }
 

@@ -7,11 +7,19 @@ html, body {
   min-height: 100%;
 }
 
+
 main {
-  @include span-columns(6);
-  @include shift(3);
+  @include span-columns(8);
+  @include shift(2);
   overflow: auto;
   padding-bottom: $footer-height;
+}
+
+@media (max-width: 768px) {
+  main {
+    @include span-columns(10);
+    @include shift(1);
+  }
 }
 
 .about-title {
