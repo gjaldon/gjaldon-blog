@@ -1,4 +1,4 @@
-// Custom variables
+//Custom variables
 $max-width: 1276px;
 $large-screen: 720px;
 $footer-height: 44px;
@@ -31,11 +31,11 @@ $base-background-color: white;
 // Font Colors
 $base-font-color: black;
 $secondary-font-color: #494452;
-$base-accent-color: #14b2cf;
+$base-accent-color: #3f3a4e;
 
 // Link Colors
-$base-link-color: $base-accent-color;
-$hover-link-color: darken($base-accent-color, 15);
+$base-link-color: #4078c0;
+$hover-link-color: darken($base-link-color, 20);
 $base-button-color: $base-link-color;
 $hover-button-color: $hover-link-color;
 

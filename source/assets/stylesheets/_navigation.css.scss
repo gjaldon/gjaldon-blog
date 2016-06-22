@@ -4,13 +4,13 @@
   $centered-navigation-logo-height: 2em;
   $centered-navigation-background: $base-accent-color;
   $centered-navigation-color: white;
-  $centered-navigation-color-hover: $secondary-font-color;
+  $centered-navigation-color-hover: white;
   $centered-navigation-height: 50px;
   $centered-navigation-item-padding: 1em;
   $centered-navigation-submenu-padding: 1em;
   $centered-navigation-submenu-width: 12em;
   $centered-navigation-item-nudge: 2.2em;
-  $horizontal-bar-mode: $large-screen;
+  $horizontal-bar-mode: 360px;
 
   background-color: $centered-navigation-background;
   border-bottom: 1px solid darken($centered-navigation-background, 6);
@@ -124,13 +124,9 @@
   }
 
   li.logo.nav-link {
-    display: none;
     line-height: 0;
     padding-right: 0;
-
-    @include media($large-screen) {
-      display: inline;
-    }
+    display: inline;
   }
 
   .logo {
