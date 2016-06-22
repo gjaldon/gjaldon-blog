@@ -1,6 +1,6 @@
 ---
 title: The Phoenix Pipeline
-date: 2015-07-18 16:32 UTC
+published: false
 tags: elixir, phoenix
 ---
 
