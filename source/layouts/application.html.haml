@@ -9,27 +9,22 @@
     = stylesheet_link_tag "application"
 
   %body{class: page_classes}
-    %header{class: "centered-navigation"}
-      .centered-navigation-wrapper
-      %ul{class: "centered-navigation-menu show"}
-        - data.site.internal.each do |link|
-          %li{class: "nav-link"}
-            = link_to link.title, link.path
-        %li{class: "nav-link logo"}
+    %header{class: "navigation"}
+      .navigation-wrapper
+        .navigation-brand
           = link_to data.site.title, "/", class: "logo"
-        - data.site.external.each do |link|
-          %li{class: "nav-link"}
-            = link_to link.title, link.url, target: "_blank"
+        %ul{class: "navigation-menu show"}
+          - data.site.internal.each do |link|
+            %li{class: "nav-link"}
+              = link_to link.title, link.path
+          - data.site.external.each do |link|
+            %li{class: "nav-link"}
+              = link_to link.title, link.url, target: "_blank"
     .wrapper
       %main
         = yield
     %footer{class: "footer"}
-      %ul
-        %li= link_to "RSS", "/feed.xml"
-        %li= link_to "Twitter", "https://twitter.com/gjaldon"
-        %li= link_to "Github", "https://github.com/gjaldon"
-        %li
-          = "© #{Time.now.year}"
+      = "Copyright by Gabriel Jaldon © #{Time.now.year}"
 
   %script
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

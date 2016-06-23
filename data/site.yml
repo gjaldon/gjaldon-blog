@@ -1,9 +1,9 @@
-title: GJ
+title: Gabriel Jaldon
 internal:
-  - title: About
-    path: "/about"
   - title: Articles
-    path: "/"
+    path: "/articles"
+  - title: RSS
+    path: "/feed.xml"
 external:
   - title: Github
     url: "https://github.com/gjaldon"

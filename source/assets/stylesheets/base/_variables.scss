@@ -5,12 +5,12 @@ $footer-height: 44px;
 
 // Typography
 $sans-serif: proxima-nova, sans-serif;
-$serif: $georgia;
-$base-font-family: $sans-serif;
+$serif: "PT Serif", Georgia;
+$base-font-family: $serif;
 $header-font-family: $base-font-family;
 
 // Sizes
-$base-font-size: 1em;
+$base-font-size: 1.1em;
 $base-line-height: $base-font-size * 1.6;
 $unitless-line-height: $base-line-height / ($base-line-height * 0 + 1); // Strip units from line-height: https://developer.mozilla.org/en-US/docs/Web/CSS/line-height#Prefer_unitless_numbers_for_line-height_values
 $header-line-height: $base-font-size * 1.25;
@@ -30,8 +30,8 @@ $base-background-color: white;
 
 // Font Colors
 $base-font-color: black;
-$secondary-font-color: #494452;
-$base-accent-color: #3f3a4e;
+$secondary-font-color: #93979e;
+$base-accent-color: #26282d;
 
 // Link Colors
 $base-link-color: #4078c0;
