@@ -1,4 +1,3 @@
-@charset "UTF-8";
 /*! normalize.css v2.0.1 | MIT License | git.io/normalize */
 /* ==========================================================================
    HTML5 display definitions
@@ -362,7 +361,7 @@ input[type="submit"] {
   border-radius: 0.1875em;
   color: white;
   display: inline-block;
-  font-size: 1em;
+  font-size: 1.1em;
   font-weight: bold;
   line-height: 1;
   padding: .75em 1em;
@@ -378,41 +377,41 @@ body {
   -webkit-font-smoothing: antialiased;
   background-color: white;
   color: black;
-  font-family: proxima-nova, sans-serif;
-  font-size: 1em;
-  line-height: 1.6; }
+  font-family: "PT Serif", Georgia;
+  font-size: 1.1em;
+  line-height: 1.76; }
 
 /* line 10, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/base/_typography.scss */
 h1, h2, h3, h4, h5, h6 {
-  font-family: proxima-nova, sans-serif;
-  line-height: 1.25em;
+  font-family: "PT Serif", Georgia;
+  line-height: 1.375em;
   font-weight: 300;
   margin: 10px 0;
   text-rendering: optimizeLegibility; }
 
 /* line 18, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/base/_typography.scss */
 h1 {
-  font-size: 2.25em; }
+  font-size: 2.475em; }
 
 /* line 22, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/base/_typography.scss */
 h2 {
-  font-size: 2em; }
+  font-size: 2.2em; }
 
 /* line 26, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/base/_typography.scss */
 h3 {
-  font-size: 1.75em; }
+  font-size: 1.925em; }
 
 /* line 30, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/base/_typography.scss */
 h4 {
-  font-size: 1.5em; }
+  font-size: 1.65em; }
 
 /* line 34, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/base/_typography.scss */
 h5 {
-  font-size: 1.25em; }
+  font-size: 1.375em; }
 
 /* line 38, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/base/_typography.scss */
 h6 {
-  font-size: 1em; }
+  font-size: 1.1em; }
 
 /* line 42, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/base/_typography.scss */
 p {
@@ -440,7 +439,7 @@ hr {
   border-left: none;
   border-right: none;
   border-top: none;
-  margin: 1.12em 0; }
+  margin: 1.232em 0; }
 
 /* line 70, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/base/_typography.scss */
 img {
@@ -451,8 +450,8 @@ img {
 blockquote {
   border-left: 2px solid #DDD;
   color: #262626;
-  margin: 1.6em 0;
-  padding-left: 0.8em; }
+  margin: 1.76em 0;
+  padding-left: 0.88em; }
 
 /* line 82, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/base/_typography.scss */
 cite {
@@ -466,21 +465,21 @@ cite {
 fieldset {
   background: #f7f7f7;
   border: 1px solid #DDD;
-  margin: 0 0 0.8em 0;
-  padding: 1.6em; }
+  margin: 0 0 0.88em 0;
+  padding: 1.76em; }
 
 /* line 8, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/base/_forms.scss */
 input,
 label,
 select {
   display: block;
-  font-family: proxima-nova, sans-serif;
-  font-size: 1em; }
+  font-family: "PT Serif", Georgia;
+  font-size: 1.1em; }
 
 /* line 16, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/base/_forms.scss */
 label {
   font-weight: bold;
-  margin-bottom: 0.4em; }
+  margin-bottom: 0.44em; }
   /* line 20, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/base/_forms.scss */
   label.required:after {
     content: "*"; }
@@ -502,10 +501,10 @@ select[multiple=multiple] {
   border-radius: 0.1875em;
   border: 1px solid #DDD;
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
-  font-family: proxima-nova, sans-serif;
-  font-size: 1em;
-  margin-bottom: 0.8em;
-  padding: 0.53333em 0.53333em;
+  font-family: "PT Serif", Georgia;
+  font-size: 1.1em;
+  margin-bottom: 0.88em;
+  padding: 0.58667em 0.58667em;
   width: 100%; }
   /* line 44, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/base/_forms.scss */
   textarea:hover,
@@ -516,8 +515,8 @@ select[multiple=multiple] {
   textarea:focus,
   input[type="email"]:focus, input[type="number"]:focus, input[type="password"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="text"]:focus, input[type="url"]:focus, input[type="color"]:focus, input[type="date"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="month"]:focus, input[type="time"]:focus, input[type="week"]:focus,
   select[multiple=multiple]:focus {
-    border-color: #3f3a4e;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06), 0 0 5px rgba(51, 47, 63, 0.7);
+    border-color: #26282d;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06), 0 0 5px rgba(26, 28, 31, 0.7);
     outline: none; }
 
 /* line 55, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/base/_forms.scss */
@@ -535,24 +534,24 @@ input[type="search"] {
 /* line 63, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/base/_forms.scss */
 input[type="checkbox"], input[type="radio"] {
   display: inline;
-  margin-right: 0.4em; }
+  margin-right: 0.44em; }
 
 /* line 68, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/base/_forms.scss */
 input[type="file"] {
-  margin-bottom: 0.8em;
-  padding-bottom: 0.53333em;
+  margin-bottom: 0.88em;
+  padding-bottom: 0.58667em;
   width: 100%; }
 
 /* line 74, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/base/_forms.scss */
 select {
   width: auto;
   max-width: 100%;
-  margin-bottom: 1.6em; }
+  margin-bottom: 1.76em; }
 
 /* line 1, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/base/_tables.scss */
 table {
   border-collapse: collapse;
-  margin: 0.8em 0;
+  margin: 0.88em 0;
   table-layout: fixed;
   width: 100%; }
 
@@ -560,13 +559,13 @@ table {
 th {
   border-bottom: 1px solid #b7b7b7;
   font-weight: bold;
-  padding: 0.8em 0;
+  padding: 0.88em 0;
   text-align: left; }
 
 /* line 15, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/base/_tables.scss */
 td {
   border-bottom: 1px solid #DDD;
-  padding: 0.8em 0; }
+  padding: 0.88em 0; }
 
 /* line 20, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/base/_tables.scss */
 tr, td, th {
@@ -578,11 +577,11 @@ ul {
 
 /* line 5, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/base/_lists.scss */
 dl {
-  margin-bottom: 0.8em; }
+  margin-bottom: 0.88em; }
   /* line 8, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/base/_lists.scss */
   dl dt {
     font-weight: bold;
-    margin-top: 0.8em; }
+    margin-top: 0.88em; }
   /* line 13, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/base/_lists.scss */
   dl dd {
     margin: 0; }
@@ -662,30 +661,15 @@ pre {
   width: 100px; }
 
 /* line 2, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-.centered-navigation {
-  background-color: #3f3a4e;
-  border-bottom: 1px solid #312d3c;
+.navigation {
+  background-color: #26282d;
+  border-bottom: 1px solid #18191c;
   min-height: 50px;
   width: 100%;
   z-index: 9999; }
   /* line 23, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-  .centered-navigation .mobile-logo {
-    display: inline;
-    float: left;
-    max-height: 50px;
-    padding-left: 1em; }
-    /* line 29, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-    .centered-navigation .mobile-logo img {
-      max-height: 50px;
-      opacity: .6;
-      padding: .8em 0; }
-    @media screen and (min-width: 360px) {
-      /* line 23, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-      .centered-navigation .mobile-logo {
-        display: none; } }
-  /* line 40, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-  .centered-navigation .centered-navigation-mobile-menu {
-    color: white;
+  .navigation .navigation-mobile-menu {
+    color: #93979e;
     display: block;
     float: right;
     font-weight: 700;
@@ -693,32 +677,45 @@ pre {
     margin: 0;
     padding-right: 1em;
     text-transform: uppercase; }
-    @media screen and (min-width: 360px) {
-      /* line 40, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-      .centered-navigation .centered-navigation-mobile-menu {
+    @media screen and (min-width: 720px) {
+      /* line 23, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
+      .navigation .navigation-mobile-menu {
         display: none; } }
-    /* line 54, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-    .centered-navigation .centered-navigation-mobile-menu:hover {
+    /* line 37, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
+    .navigation .navigation-mobile-menu:hover {
       color: white; }
-  /* line 61, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-  .centered-navigation .centered-navigation-wrapper {
+  /* line 44, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
+  .navigation .navigation-wrapper {
     max-width: 1276px;
     margin-left: auto;
     margin-right: auto;
     position: relative;
     z-index: 999; }
     /* line 15, /Users/gjaldon/.gem/ruby/2.2.2/gems/bourbon-4.0.2/app/assets/stylesheets/addons/_clearfix.scss */
-    .centered-navigation .centered-navigation-wrapper:after {
+    .navigation .navigation-wrapper:after {
       content: "";
       display: table;
       clear: both; }
-    /* line 15, /Users/gjaldon/.gem/ruby/2.2.2/gems/bourbon-4.0.2/app/assets/stylesheets/addons/_clearfix.scss */
-    .centered-navigation .centered-navigation-wrapper:after {
-      content: "";
-      display: table;
-      clear: both; }
-  /* line 68, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-  .centered-navigation ul.centered-navigation-menu {
+  /* line 50, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
+  .navigation .navigation-brand {
+    display: block;
+    text-align: center; }
+    @media screen and (min-width: 720px) {
+      /* line 50, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
+      .navigation .navigation-brand {
+        margin-left: 17.05961%;
+        float: left;
+        display: block;
+        margin-right: 2.35765%;
+        width: 23.23176%;
+        display: inline-block;
+        float: none;
+        text-align: left; }
+        /* line 38, /Users/gjaldon/.gem/ruby/2.2.2/gems/neat-1.6.0/app/assets/stylesheets/grid/_span-columns.scss */
+        .navigation .navigation-brand:last-child {
+          margin-right: 0; } }
+  /* line 63, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
+  .navigation ul.navigation-menu {
     -webkit-transform-style: preserve-3d;
     clear: both;
     display: none;
@@ -727,186 +724,86 @@ pre {
     padding: 0;
     width: 100%;
     z-index: 99999; }
-    /* line 78, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-    .centered-navigation ul.centered-navigation-menu.show {
-      display: block; }
-    @media screen and (min-width: 360px) {
-      /* line 68, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-      .centered-navigation ul.centered-navigation-menu {
-        display: block;
-        text-align: center; } }
-  @media screen and (min-width: 360px) {
-    /* line 90, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-    .centered-navigation .nav-link:first-child {
+    /* line 73, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
+    .navigation ul.navigation-menu.show {
+      display: block;
+      text-align: center; }
+      @media screen and (min-width: 720px) {
+        /* line 73, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
+        .navigation ul.navigation-menu.show {
+          float: left;
+          display: block;
+          margin-right: 2.35765%;
+          width: 40.29137%;
+          display: inline-block;
+          text-align: right;
+          float: none; }
+          /* line 38, /Users/gjaldon/.gem/ruby/2.2.2/gems/neat-1.6.0/app/assets/stylesheets/grid/_span-columns.scss */
+          .navigation ul.navigation-menu.show:last-child {
+            margin-right: 0; } }
+  @media screen and (min-width: 720px) {
+    /* line 88, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
+    .navigation .nav-link:first-child {
       margin-left: 2.2em; } }
-  /* line 96, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-  .centered-navigation .nav-link {
-    background: #3f3a4e;
-    display: block;
+  /* line 94, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
+  .navigation .nav-link {
+    background: #26282d;
+    display: inline;
     line-height: 50px;
     overflow: hidden;
-    padding-right: 1em;
-    text-align: right;
+    padding-left: 1em;
     width: 100%;
     z-index: 9999; }
-    @media screen and (min-width: 360px) {
-      /* line 96, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-      .centered-navigation .nav-link {
-        background: transparent;
-        display: inline;
-        line-height: 50px; }
-        /* line 111, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-        .centered-navigation .nav-link a {
-          padding-right: 1em; } }
-    /* line 116, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-    .centered-navigation .nav-link a {
-      color: white;
+    /* line 103, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
+    .navigation .nav-link a {
+      color: #93979e;
       display: inline-block; }
-      /* line 120, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-      .centered-navigation .nav-link a:hover {
+      /* line 107, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
+      .navigation .nav-link a:hover {
         color: white; }
-  /* line 126, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-  .centered-navigation li.logo.nav-link {
-    line-height: 0;
+  /* line 113, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
+  .navigation .logo {
+    font-size: 1.75em;
+    font-weight: bold;
+    line-height: 1.5;
     padding-right: 0;
-    display: inline; }
-  /* line 132, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-  .centered-navigation .logo {
-    font-size: 1.3em;
-    font-weight: bold; }
-  /* line 139, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-  .centered-navigation li.more.nav-link {
-    padding-right: 0; }
-    @media screen and (min-width: 720px) {
-      /* line 139, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-      .centered-navigation li.more.nav-link {
-        padding-right: 1em; } }
-    /* line 146, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-    .centered-navigation li.more.nav-link > ul > li:first-child a {
-      padding-top: 1em; }
-    /* line 150, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-    .centered-navigation li.more.nav-link a {
-      margin-right: 1em; }
-    /* line 154, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-    .centered-navigation li.more.nav-link > a {
-      padding-right: 0.6em; }
-    /* line 158, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-    .centered-navigation li.more.nav-link > a:after {
-      position: absolute;
-      top: auto;
-      right: -0.4em;
-      bottom: auto;
-      left: auto;
-      color: white;
-      content: '\25BE'; }
-  /* line 165, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-  .centered-navigation li.more {
-    overflow: visible;
-    padding-right: 0; }
-    /* line 169, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-    .centered-navigation li.more a {
-      padding-right: 1em; }
-    /* line 173, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-    .centered-navigation li.more > a {
-      padding-right: 1.6em;
-      position: relative; }
-      @media screen and (min-width: 720px) {
-        /* line 173, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-        .centered-navigation li.more > a {
-          margin-right: 1em; } }
-      /* line 181, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-      .centered-navigation li.more > a:after {
-        content: '›';
-        font-size: 1.2em;
-        position: absolute;
-        right: 0.5em; }
-    /* line 189, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-    .centered-navigation li.more:hover > .submenu {
-      display: block; }
-    @media screen and (min-width: 360px) {
-      /* line 165, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-      .centered-navigation li.more {
-        padding-right: 1em;
-        position: relative; } }
-  /* line 199, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-  .centered-navigation ul.submenu {
-    display: none;
-    padding-left: 0; }
-    @media screen and (min-width: 360px) {
-      /* line 199, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-      .centered-navigation ul.submenu {
-        left: -1em;
-        position: absolute;
-        top: 1.5em; } }
-    @media screen and (min-width: 360px) {
-      /* line 209, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-      .centered-navigation ul.submenu .submenu {
-        left: 11.8em;
-        top: 0; } }
-    /* line 216, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-    .centered-navigation ul.submenu li {
-      display: block;
-      padding-right: 0; }
-      @media screen and (min-width: 360px) {
-        /* line 216, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-        .centered-navigation ul.submenu li {
-          line-height: 38.46154px; }
-          /* line 223, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-          .centered-navigation ul.submenu li:first-child > a {
-            border-top-left-radius: 0.1875em;
-            border-top-right-radius: 0.1875em; }
-          /* line 228, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-          .centered-navigation ul.submenu li:last-child > a {
-            border-bottom-left-radius: 0.1875em;
-            border-bottom-right-radius: 0.1875em;
-            padding-bottom: .7em; } }
-      /* line 235, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-      .centered-navigation ul.submenu li a {
-        background-color: #383345;
-        display: inline-block;
-        text-align: right;
-        width: 100%; }
-        @media screen and (min-width: 360px) {
-          /* line 235, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_navigation.css.scss */
-          .centered-navigation ul.submenu li a {
-            background-color: #3f3a4e;
-            padding-left: 1em;
-            text-align: left;
-            width: 12em; } }
+    display: inline;
+    color: white; }
 
 /* line 1, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_footer.css.scss */
 .footer {
-  background: #3f3a4e;
+  background: #26282d;
   padding: 10px;
   text-align: center;
   width: 100%;
   position: relative;
   margin-top: -44px;
   height: 44px;
-  clear: both; }
-  /* line 16, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_footer.css.scss */
+  clear: both;
+  color: #93979e; }
+  /* line 17, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_footer.css.scss */
   .footer ul {
     margin-bottom: 1em;
     width: 100%;
     margin: 0;
     list-style-type: none; }
-  /* line 23, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_footer.css.scss */
+  /* line 24, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_footer.css.scss */
   .footer ul li {
     padding-right: 1em;
     font-size: 1em;
     color: white;
     display: inline;
     text-align: left; }
-  /* line 31, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_footer.css.scss */
+  /* line 32, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_footer.css.scss */
   .footer ul li a {
     text-decoration: underline;
     color: white; }
-    /* line 35, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_footer.css.scss */
+    /* line 36, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_footer.css.scss */
     .footer ul li a:hover {
-      color: #494452; }
+      color: #93979e; }
 
 @media (max-width: 768px) {
-  /* line 42, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_footer.css.scss */
+  /* line 43, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_footer.css.scss */
   .footer {
     height: auto; } }
 /* line 1, /Users/gjaldon/code/personal/gjaldon-blog/source/assets/stylesheets/_article.css.scss */
