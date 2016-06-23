@@ -10,7 +10,7 @@
   $navigation-submenu-padding: 1em;
   $navigation-submenu-width: 12em;
   $navigation-item-nudge: 2.2em;
-  $horizontal-bar-mode: 360px;
+  $horizontal-bar-mode: $large-screen;
 
   background-color: $navigation-background;
   border-bottom: 1px solid darken($navigation-background, 6);
@@ -19,23 +19,6 @@
   z-index: 9999;
 
   // Mobile view
-
-  .mobile-logo {
-    display: inline;
-    float: left;
-    max-height: $navigation-height;
-    padding-left: $navigation-padding;
-
-    img {
-      max-height: $navigation-height;
-      opacity: .6;
-      padding: .8em 0;
-    }
-
-    @include media($horizontal-bar-mode) {
-      display: none;
-    }
-  }
 
   .navigation-mobile-menu {
     color: $navigation-color;
@@ -65,10 +48,16 @@
   }
 
   .navigation-brand {
-    @include shift(2);
-    @include span-columns(3);
-    display: inline-block;
-    float: none;
+    display: block;
+    text-align: center;
+
+    @include media ($horizontal-bar-mode) {
+      @include shift(2);
+      @include span-columns(3);
+      display: inline-block;
+      float: none;
+      text-align: left;
+    }
   }
 
   ul.navigation-menu {
@@ -80,16 +69,17 @@
     padding: 0;
     width: 100%;
     z-index: 99999;
-    text-align: right;
 
     &.show {
-      @include span-columns(5);
-      display: inline-block;
-      float: none;
-    }
-
-    @include media ($horizontal-bar-mode) {
       display: block;
+      text-align: center;
+
+      @include media($horizontal-bar-mode) {
+        @include span-columns(5);
+        display: inline-block;
+        text-align: right;
+        float: none;
+      }
     }
   }
 
@@ -103,22 +93,12 @@
 
   .nav-link {
     background: $navigation-background;
-    display: block;
+    display: inline;
     line-height: $navigation-height;
     overflow: hidden;
     padding-left: $navigation-submenu-padding;
     width: 100%;
     z-index: 9999;
-
-    @include media($horizontal-bar-mode) {
-      background: transparent;
-      display: inline;
-      line-height: $navigation-height;
-
-      a {
-        padding-left: $navigation-item-padding;
-      }
-    }
 
     a {
       color: $navigation-color;
