@@ -1,5 +1,5 @@
 <div class="article-entry">
-  <% articles.each do |article| %>
+  <% blog.articles.each do |article| %>
     <time><%= article.date.strftime("%b %e, %Y") %></time>
     <h2 class="article-title">
       <%= link_to article.title, article %>

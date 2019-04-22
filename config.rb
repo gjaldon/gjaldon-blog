@@ -14,10 +14,10 @@ set :images_dir, 'assets/images'
 set :fonts_dir, 'assets/fonts'
 set :layout, 'layouts/application'
 
-configure :build do
-  # Relative assets needed to deploy to Github Pages
-  activate :relative_assets
-end
+# configure :build do
+#   # Relative assets needed to deploy to Github Pages
+#   activate :relative_assets
+# end
 
 activate :deploy do |deploy|
   deploy.build_before = true
