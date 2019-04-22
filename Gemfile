@@ -13,3 +13,4 @@ gem 'middleman-deploy', '~> 2.0.0.pre.alpha'
 gem "middleman-disqus"
 gem "middleman-minify-html"
 gem "middleman-syntax"
+gem "middleman-livereload"

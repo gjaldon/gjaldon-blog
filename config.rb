@@ -3,6 +3,7 @@ require "extensions/views"
 activate :views
 activate :directory_indexes
 
+page "/articles", layout: "application"
 page "CNAME", layout: false
 page "/feed.xml", layout: false
 
@@ -28,7 +29,7 @@ activate :blog do |blog|
   blog.prefix = "articles"
   blog.permalink = "{title}.html"
   blog.tag_template = "tag.html"
-  blog.layout = "article_layout.html"
+  blog.layout = "article_layout"
 end
 
 activate :disqus do |disqus|
@@ -36,6 +37,8 @@ activate :disqus do |disqus|
 end
 
 activate :syntax
+
+activate :livereload
 
 helpers do
   def nav_link(link_text, page_url, options = {})
