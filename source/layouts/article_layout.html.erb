@@ -1,0 +1,27 @@
+<% wrap_layout "layouts/application" do %>
+  <article>
+    <h1 class="current-article-title">
+      <%= current_article.title %>
+    </h1>
+    <div class="current-article-meta">
+      <%= "by Gabriel Jaldon #{current_article.date.strftime('%b %e, %Y')} " %>
+      <a class="twitter-share-button" href="https://twitter.com/share" data-hashtags="elixirlang" data-via="gjaldon">
+        Tweet
+      </a>
+      <script>
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+      </script>
+    </div>
+    <hr/>
+    <%= yield %>
+
+    <i>Follow me on Twitter for more articles on Phoenix, Ecto and anything web development with Elixir.</i>
+    <a href="https://twitter.com/gjaldon", class="twitter-follow-button" data-show-count="false">Follow @gjaldon</a>
+    <script>
+      !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+    </script>
+  </article>
+
+  <%= disqus %>
+  <%= disqus_count %>
+<% end %>

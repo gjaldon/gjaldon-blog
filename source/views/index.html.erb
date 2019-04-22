@@ -1,27 +1,31 @@
 ---
 title: Gabriel Jaldon on Web Development with Elixir and Phoenix
+foo: bar
 ---
 
-%article
-  %h1.about-title
-    .avatar
-      = image_tag "avatar.jpg"
+<article>
+  <h1 class="about-title">
+    <div class="avatar">
+      <%= image_tag "avatar.png" %>
+    </div>
     Hi, I'm Gabriel Jaldon
-  %hr
-
-  %p
+  </h1>
+  <hr/>
+  <p>
     This blog mainly covers topics on web development with
-    = link_to("Elixir", "http://elixir-lang.org/")
+    <%= link_to("Elixir", "http://elixir-lang.org/") %>
     and is meant to help others better appreciate this relatively
     new language. I've mainly used
-    = link_to("Ruby", "https://www.ruby-lang.org/en/")
+    <%= link_to("Ruby", "https://www.ruby-lang.org/en/") %>
     and
-    = link_to("Ruby on Rails", "http://rubyonrails.org/")
+    <%= link_to("Ruby on Rails", "http://rubyonrails.org/") %>
     in the past, but have found Elixir even more enjoyable to work
     with. I hope it goes the same for you!
-
-  %p
+  </p>
+  <p>
     If you are interested in web development with Elixir, follow me on
-    = link_to("Twitter", "https://twitter.com/gjaldon")
+    <%= link_to("Twitter", "https://twitter.com/gjaldon") %>
     where I will announce my latest articles. I'd be glad to hear from you
     too for any feedback and suggestions you might have.
+  </p>
+</article>
